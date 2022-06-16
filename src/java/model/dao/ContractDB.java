@@ -8,10 +8,8 @@ package model.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import model.DBConnect.DBContext;
 import model.entity.Contract;
 
@@ -19,75 +17,64 @@ import model.entity.Contract;
  *
  * @author LinhDen
  */
-public class ContractDB {
-    Connection conn = null;
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    
-    public List<Contract> getAllContract() throws Exception {
-        List<Contract> list = new ArrayList<>();
-        String SELECT_ALL_CONTRACT = "Select Contract.id, Contract.employeeID, Contract.fromDate, Contract.toDate, \n" +
-                                     "Contract.salaryBasic, Contract.note, Employee.fullName  \n" +
-                                     "from Employee inner join Contract on Employee.id = Contract.employeeId";
-
-        try {
-            Connection conn = DBContext.getConnection();
-            System.out.println(conn);
-            pstmt = conn.prepareStatement(SELECT_ALL_CONTRACT);
-            rs = pstmt.executeQuery();
+public class ContractDB implements DBContext{
+    public static ArrayList<Contract> getAllContract() {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "Select Contract.id, Contract.employeeID, Contract.fromDate, Contract.toDate, \n" +
+                           "Contract.salaryBasic, Contract.note, Employee.fullName  \n" +
+                           "from Employee inner join Contract on Employee.id = Contract.employeeId ";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<Contract> list = new ArrayList<>();
+//            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             while (rs.next()) {
-                list.add(new Contract (
-                        rs.getInt("id"),
-                        rs.getInt("empID"),
-                        new Date(rs.getDate("fDate").getTime()),
-                        new Date(rs.getDate("tDate").getTime()),
-                        rs.getFloat("salaryBasic"),
-                        rs.getString("note"),
-                        rs.getString("empName")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                conn.close();
-                pstmt.close();
-                rs.close();
-            } catch(SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return list;
-    }
+                list.add(new Contract(rs.getInt(1),
+                        rs.getInt(2),
+                        new Date(rs.getDate(3).getTime()),
+                        new Date(rs.getDate(4).getTime()),
+                        rs.getFloat(5),
+                        rs.getString(6)));
 
-    public Contract GetContractById(int id) throws Exception
-    {
-        String SELECT_CONTRACT = "Select Contract.id, Contract.employeeID, Contract.fromDate, Contract.toDate, \n" +
-                                 "Contract.salaryBasic, Contract.note, Employee.fullName  \n" +
-                                 "from Employee inner join Contract on Employee.id = Contract.employeeId where Contract.id = ?";
-
-        try {
-            Connection conn = DBContext.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(SELECT_CONTRACT);
-            pstmt.setInt(1, id);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return new Contract(
-                        rs.getInt("id"),
-                        rs.getInt("empID"),
-                        new Date(rs.getDate("fDate").getTime()),
-                        new Date(rs.getDate("tDate").getTime()),
-                        rs.getFloat("salaryBasic"),
-                        rs.getString("note"),
-                        rs.getString("empName")
-                );
             }
             conn.close();
-            pstmt.close();
-            rs.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            return list;
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Error at model.dao.ContractDB.getAllContract()");
+            throw new RuntimeException("Somthing error...");
         }
-        return null;
+    }
+    //public static void main(String[] args) {
+    //    for(Contract c: ContractDB.getAllContract()){
+    //        System.out.println(c);
+    //   }
+    //    System.out.println(ContractDB.getAllContract());
+    //}
+    
+
+public static Contract GetContractById(int id) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "Select Contract.id, Contract.employeeID, Contract.fromDate, Contract.toDate, \n" +
+                           "Contract.salaryBasic, Contract.note, Employee.fullName  \n" +
+                           "from Employee inner join Contract on Employee.id = Contract.employeeId where Contract.id = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+//            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            if (rs.next()) {
+                return new Contract(rs.getInt(1),
+                        rs.getInt(2),
+                        new Date(rs.getDate(3).getTime()),
+                        new Date(rs.getDate(4).getTime()),
+                        rs.getFloat(5),
+                        rs.getString(6));
+            }
+            conn.close();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Error at model.dao.ContractDB.getAllContract()");
+            throw new RuntimeException("Somthing error...");
+        }
+        throw new RuntimeException("Hợp Đồng không tồn tại!");
     }
 }
