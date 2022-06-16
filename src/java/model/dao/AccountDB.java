@@ -35,6 +35,21 @@ public class AccountDB implements DBContext {
         }
         throw new RuntimeException("Tài khoản không tồn tại!");
     }
-    
-    
+
+    public static void doChangePass(Account a){
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "update Account "
+                    + "set password = ? "
+                    + "where userID = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, a.getPassword());
+            ps.setString(2, a.getUserName());
+            ps.executeUpdate();
+            conn.close();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Error at AccountDB.changPass()");
+            throw new RuntimeException("Vui lòng thử lại!");
+        }
+    }
 }

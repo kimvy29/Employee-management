@@ -65,6 +65,35 @@ public class Account {
         return password;
     }
 
+    public static Account login(String userID, String password) {
+        Account a = AccountDB.getAccount(userID);
+        if (a.isActivity()) {
+            if (a.getPassword().equals(Account.pass(password))) {
+            return a;
+        } else {
+            throw new RuntimeException("Mật khẩu sai!");
+        }
+        } else {
+            throw new RuntimeException("Tài khoản bị khóa");
+        }
+        
+    }
+    
+    public void changePass(String oldPass, String newPass) {
+        if (this.password.equals(Account.pass(oldPass))) {
+            this.setPassword(Account.pass(newPass));
+        } else {
+            throw new RuntimeException("Mật khẩu sai!");
+        }
+    }
+    
+    public boolean checkPass(String password) {
+        if (this.password.equals(Account.pass(password))) {
+            return true;
+        }
+        throw new RuntimeException("Mật khẩu sai!");
+    }
+    
     public void setPassword(String password) {
         this.password = password;
     }
@@ -96,9 +125,5 @@ public class Account {
     @Override
     public String toString() {
         return "Account{" + "userName=" + userName + ", password=" + password + ", empNo=" + empId + ", roleId=" + roleId + ", activity=" + activity + '}';
-    }
-
-    public static Account login(String userName, String password) {
-        return null;
     }
 }
