@@ -65,15 +65,18 @@ public class Account {
         return password;
     }
 
-    /*
     public static Account login(String userID, String password) {
         Account a = AccountDB.getAccount(userID);
-        if (a.getPassword().equals(Account.pass(password))) {
-            AccountDB.login(a);
+        if (a.isActivity()) {
+            if (a.getPassword().equals(Account.pass(password))) {
             return a;
         } else {
             throw new RuntimeException("Mật khẩu sai!");
         }
+        } else {
+            throw new RuntimeException("Tài khoản bị khóa");
+        }
+        
     }
     
     public void changePass(String oldPass, String newPass) {
@@ -90,7 +93,6 @@ public class Account {
         }
         throw new RuntimeException("Mật khẩu sai!");
     }
-    */
     
     public void setPassword(String password) {
         this.password = password;
