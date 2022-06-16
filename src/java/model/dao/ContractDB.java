@@ -33,7 +33,8 @@ public class ContractDB implements DBContext{
                         new Date(rs.getDate(3).getTime()),
                         new Date(rs.getDate(4).getTime()),
                         rs.getFloat(5),
-                        rs.getString(6)));
+                        rs.getString(6),
+                        rs.getString(7)));
 
             }
             conn.close();
@@ -45,8 +46,8 @@ public class ContractDB implements DBContext{
         }
     }
     //public static void main(String[] args) {
-    //    for(Contract c: ContractDB.getAllContract()){
-    //        System.out.println(c);
+    //    for(Contract e: ContractDB.getAllContract()){
+    //        System.out.println(e);
     //   }
     //    System.out.println(ContractDB.getAllContract());
     //}
@@ -67,7 +68,8 @@ public static Contract GetContractById(int id) {
                         new Date(rs.getDate(3).getTime()),
                         new Date(rs.getDate(4).getTime()),
                         rs.getFloat(5),
-                        rs.getString(6));
+                        rs.getString(6),
+                        rs.getString(7));
             }
             conn.close();
         } catch (Exception e) {
