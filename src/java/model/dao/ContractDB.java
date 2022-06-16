@@ -59,10 +59,12 @@ public class ContractDB {
         }
         return list;
     }
-    
+
     public Contract GetContractById(int id) throws Exception
     {
-        String SELECT_CONTRACT = "SELECT * FROM Contract WHERE id = ?";
+        String SELECT_CONTRACT = "Select Contract.id, Contract.employeeID, Contract.fromDate, Contract.toDate, \n" +
+                                 "Contract.salaryBasic, Contract.note, Employee.fullName  \n" +
+                                 "from Employee inner join Contract on Employee.id = Contract.employeeId where Contract.id = ?";
 
         try {
             Connection conn = DBContext.getConnection();
