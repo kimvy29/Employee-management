@@ -18,16 +18,16 @@ public class Contract {
     private Date tDate;
     private float salaryBasic;
     private String note;
-    private String empName;
+    private String empNameString;   
 
-    public Contract(int id, int empID, Date fDate, Date tDate, float salaryBasic, String note, String empName) {
+    public Contract(int id, int empID, Date fDate, Date tDate, float salaryBasic, String note, String empNameString) {
         this.id = id;
         this.empID = empID;
         this.fDate = fDate;
         this.tDate = tDate;
         this.salaryBasic = salaryBasic;
         this.note = note;
-        this.empName = empName;
+        this.empNameString = empNameString;
     }
 
     public int getId() {
@@ -78,17 +78,18 @@ public class Contract {
         this.note = note;
     }
 
-    public String getEmpName() {
-        return empName;
+    public String getEmpNameString() {
+        return empNameString;
     }
 
-    public void setEmpName(String empName) {
-        this.empName = empName;
+    public void setEmpNameString(String empNameString) {
+        this.empNameString = empNameString;
     }
 
     @Override
     public String toString() {
-        return "Contract{" + "id=" + id + ", empID=" + empID + ", fDate=" + fDate + ", tDate=" + tDate + ", salaryBasic=" + salaryBasic + ", note=" + note + ", empName=" + empName + '}';
+        return "Contract{" + "id=" + id + ", empID=" + empID + ", fDate=" + fDate + ", tDate=" + tDate + ", salaryBasic=" + salaryBasic + ", note=" + note + ", empNameString=" + empNameString + '}';
     }
+   
     
 }    
