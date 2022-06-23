@@ -20,12 +20,43 @@ public class Employee {
     private int positionId;
     private String positionName;
     private int managerId;
-    private String managerName;
     private boolean activity;
     private int departmentId;
-    private String departmentName;
 
-    public Employee(int id, String fullName, String email, String address, String tel, int positionId, String positionName, int managerId, String managerName, boolean activity, int departmentId, String departmentName) {
+    public Employee(String fullName, String email, String address, String tel, int positionId, int managerId, boolean activity, int departmentId) {
+        this.fullName = fullName;
+        this.email = email;
+        this.address = address;
+        this.tel = tel;
+        this.positionId = positionId;
+        this.managerId = managerId;
+        this.activity = activity;
+        this.departmentId = departmentId;
+    }
+    
+    public Employee(String fullName, String email, String address, String tel, int positionId, int managerId, int departmentId) {
+        this.fullName = fullName;
+        this.email = email;
+        this.address = address;
+        this.tel = tel;
+        this.positionId = positionId;
+        this.managerId = managerId;
+        this.departmentId = departmentId;
+    }
+
+    public Employee(int id, String fullName, String email, String address, String tel, int positionId, int managerId, boolean activity, int departmentId) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.address = address;
+        this.tel = tel;
+        this.positionId = positionId;
+        this.managerId = managerId;
+        this.activity = activity;
+        this.departmentId = departmentId;
+    }
+
+    public Employee(int id, String fullName, String email, String address, String tel, int positionId, String positionName, int managerId, boolean activity, int departmentId) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -34,15 +65,25 @@ public class Employee {
         this.positionId = positionId;
         this.positionName = positionName;
         this.managerId = managerId;
-        this.managerName = managerName;
         this.activity = activity;
         this.departmentId = departmentId;
-        this.departmentName = departmentName;
+    }
+    
+    public Employee(Employee e){
+        this(e.id, e.fullName, e.email, e.address, e.tel, e.positionId, e.managerId, e.activity, e.departmentId);
+    }
+    
+    public Employee(int id) {
+        this(EmployeeDB.getEmployee(id));
     }
 
     public Employee() {
     }
 
+    public String getUserName() {
+        return new Account(this.id).getUserName();
+    }
+    
     public int getId() {
         return id;
     }
@@ -91,14 +132,14 @@ public class Employee {
         this.positionId = positionId;
     }
 
-    public String getPositionName() {
-        return positionName;
-    }
-
     public void setPositionName(String positionName) {
         this.positionName = positionName;
     }
 
+    public String getPositionName() {
+        return positionName;
+    }
+    
     public int getManagerId() {
         return managerId;
     }
@@ -106,13 +147,13 @@ public class Employee {
     public void setManagerId(int managerId) {
         this.managerId = managerId;
     }
-
+    
     public String getManagerName() {
-        return managerName;
-    }
-
-    public void setManagerName(String managerName) {
-        this.managerName = managerName;
+        try {
+            return new Employee(this.managerId).getFullName();
+        } catch (Exception e) {
+            return "-";
+        }
     }
 
     public boolean isActivity() {
@@ -130,18 +171,18 @@ public class Employee {
     public void setDepartmentId(int departmentId) {
         this.departmentId = departmentId;
     }
-
-    public String getDepartmentName() {
-        return departmentName;
-    }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+    
+    public String getDepartmentName(){
+        return new Department(this.departmentId).getName();
     }
 
     @Override
     public String toString() {
-        return "Employee{" + "id=" + id + ", fullName=" + fullName + ", email=" + email + ", address=" + address + ", tel=" + tel + ", positionId=" + positionId + ", positionName=" + positionName + ", managerId=" + managerId + ", managerName=" + managerName + ", activity=" + activity + ", departmentId=" + departmentId + ", departmentName=" + departmentName + '}';
+        return "Employee{" + "id=" + id + ", fullName=" + fullName + ", email=" + email + ", address=" + address + ", tel=" + tel + ", positionId=" + positionId + ", managerId=" + managerId + ", activity=" + activity + ", departmentId=" + departmentId + '}';
+    }
+    
+    public void create(Contract c){
+        EmployeeDB.create(this, c);
     }
     
     public void update() {

@@ -5,7 +5,9 @@
  */
 package model.entity;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.sql.Date;
+import model.dao.ContractDB;
 
 /**
  *
@@ -13,21 +15,44 @@ import java.util.Date;
  */
 public class Contract {
     private int id;
-    private int empID;
+    private int empId;
     private Date fDate;
     private Date tDate;
-    private float salaryBasic;
-    private String note;
-    private String empName;   
+    private long salaryBasic;
+    private String note;  
 
-    public Contract(int id, int empID, Date fDate, Date tDate, float salaryBasic, String note, String empName) {
+    public Contract(int id, int empId, Date fDate, Date tDate, long salaryBasic, String note) {
         this.id = id;
-        this.empID = empID;
+        this.empId = empId;
         this.fDate = fDate;
         this.tDate = tDate;
         this.salaryBasic = salaryBasic;
         this.note = note;
-        this.empName = empName;
+    }
+    
+    public Contract(int empId, Date tDate, long salaryBasic, String note) {
+        this.empId = empId;
+        this.tDate = tDate;
+        this.salaryBasic = salaryBasic;
+        this.note = note;
+    }
+    
+    public Contract(Date tDate, long salaryBasic, String note) {
+        this.tDate = tDate;
+        this.salaryBasic = salaryBasic;
+        this.note = note;
+    }
+    
+    public Contract(Contract c){
+        this(c.id, c.empId, c.fDate, c.tDate, c.salaryBasic, c.note);
+    }
+    
+    public Contract(int id) {
+        ContractDB.GetContractById(id);
+    }
+    
+    public Contract(Employee e){
+        ContractDB.GetContractByEmployeeId(e.getId());
     }
 
     public int getId() {
@@ -38,35 +63,45 @@ public class Contract {
         this.id = id;
     }
 
-    public int getEmpID() {
-        return empID;
+    public int getEmpId() {
+        return empId;
     }
 
-    public void setEmpID(int empID) {
-        this.empID = empID;
+    public void setEmpID(int empId) {
+        this.empId = empId;
+    }
+    
+    public String getFullName() {
+        return new Employee(this.empId).getFullName();
     }
 
-    public Date getfDate() {
-        return fDate;
+    public String getFDate() {
+        SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
+        return f.format(fDate);
     }
 
     public void setfDate(Date fDate) {
         this.fDate = fDate;
     }
 
-    public Date gettDate() {
-        return tDate;
+    public String getTDate() {
+        SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
+        return f.format(tDate);
     }
 
+    public Date getToDate() {
+        return tDate;
+    }
+    
     public void settDate(Date tDate) {
         this.tDate = tDate;
     }
 
-    public float getSalaryBasic() {
+    public long getSalaryBasic() {
         return salaryBasic;
     }
 
-    public void setSalaryBasic(float salaryBasic) {
+    public void setSalaryBasic(long salaryBasic) {
         this.salaryBasic = salaryBasic;
     }
 
@@ -78,18 +113,13 @@ public class Contract {
         this.note = note;
     }
 
-    public String getEmpName() {
-        return empName;
-    }
-
-    public void setEmpName(String empName) {
-        this.empName = empName;
-    }
-
     @Override
     public String toString() {
-        return "Contract{" + "id=" + id + ", empID=" + empID + ", fDate=" + fDate + ", tDate=" + tDate + ", salaryBasic=" + salaryBasic + ", note=" + note + ", empName=" + empName + '}';
+        return "Contract{" + "id=" + id + ", empId=" + empId + ", fDate=" + fDate + ", tDate=" + tDate + ", salaryBasic=" + salaryBasic + ", note=" + note + '}';
     }
-   
+    
+    public void create(){
+        ContractDB.create(this);
+    }
     
 }    

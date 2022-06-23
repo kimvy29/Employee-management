@@ -20,25 +20,27 @@ public class Account {
     private String password;
     private int empId;
     private int roleId;
-    private boolean activity;
 
     public Account() {
     }
 
-    public Account(String userName, String password, int empId, int roleId, boolean activity) {
+    public Account(String userName, String password, int empId, int roleId) {
         this.userName = userName;
         this.password = password;
         this.empId = empId;
         this.roleId = roleId;
-        this.activity = activity;
     }
     
     public Account(Account a){
-        this(a.userName, a.password, a.empId, a.roleId, a.activity);
+        this(a.userName, a.password, a.empId, a.roleId);
     }
     
     public Account(String userName) {
         this(AccountDB.getAccount(userName));
+    }
+    
+    public Account(int empId) {
+        this(AccountDB.getAccountByEmpId(empId));
     }
 
     public String getUserName() {
@@ -82,6 +84,7 @@ public class Account {
     public void changePass(String oldPass, String newPass) {
         if (this.password.equals(Account.pass(oldPass))) {
             this.setPassword(Account.pass(newPass));
+            AccountDB.update(this);
         } else {
             throw new RuntimeException("Mật khẩu sai!");
         }
@@ -101,6 +104,10 @@ public class Account {
     public int getEmpId() {
         return empId;
     }
+    
+    public String getFullName() {
+        return new Employee(this.empId).getFullName();
+    }
 
     public void setEmpId(int empId) {
         this.empId = empId;
@@ -115,15 +122,19 @@ public class Account {
     }
 
     public boolean isActivity() {
-        return activity;
-    }
-
-    public void setActivity(boolean activity) {
-        this.activity = activity;
+        return new Employee(this.empId).isActivity();
     }
 
     @Override
     public String toString() {
-        return "Account{" + "userName=" + userName + ", password=" + password + ", empNo=" + empId + ", roleId=" + roleId + ", activity=" + activity + '}';
+        return "Account{" + "userName=" + userName + ", password=" + password + ", empId=" + empId + ", roleId=" + roleId + '}';
+    }
+    
+    public void update(){
+        AccountDB.update(this);
+    }
+    
+    public void create(){
+        AccountDB.create(this);
     }
 }
