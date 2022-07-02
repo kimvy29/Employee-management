@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.sql.Date;
 import model.DBConnect.DBContext;
 import model.entity.Contract;
+import model.entity.Employee;
 
 /**
  *
@@ -98,6 +99,7 @@ public class ContractDB implements DBContext {
     }
     
     public static void main(String[] args) {
-        new Contract(1004,Date.valueOf("2024-10-20"), 10000000, "Hỗ trợ xăng xe").create();
+//        new Contract(1004,Date.valueOf("2024-10-20"), 10000000, "Hỗ trợ xăng xe").create();
+System.out.println(new Contract(new Employee(1005)));
     }
 }

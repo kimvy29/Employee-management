@@ -48,11 +48,11 @@ public class Contract {
     }
     
     public Contract(int id) {
-        ContractDB.GetContractById(id);
+        this(ContractDB.GetContractById(id));
     }
     
     public Contract(Employee e){
-        ContractDB.GetContractByEmployeeId(e.getId());
+        this(ContractDB.GetContractByEmployeeId(e.getId()));
     }
 
     public int getId() {

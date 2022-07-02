@@ -1,0 +1,151 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package model.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import model.DBConnect.DBContext;
+import model.entity.Employee;
+import model.entity.TimeKeeping;
+
+/**
+ *
+ * @author ACER
+ */
+public class TimeKeepingDB implements DBContext {
+
+    public static ArrayList<TimeKeeping> getTimeKeepingByEmployee(int employeeId) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "SELECT id, employeeId, currentDate, startTime, endTime, punish, workingHours, startOverTime, endOverTime, overTimeHours, checkPay, validVac FROM TimeKeeping";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<TimeKeeping> list = new ArrayList<>();
+//            SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
+            while (rs.next()) {
+                list.add(new TimeKeeping(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getInt(6), rs.getFloat(7), rs.getTime(8), rs.getTime(9), rs.getFloat(10), rs.getBoolean(11), rs.getBoolean(12)));
+
+            }
+            conn.close();
+            return list;
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Error at model.dao.ContractDB.getTimeKeepingByEmployee()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
+
+    public static TimeKeeping getTimeKeeping(int id) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "SELECT id, employeeId, currentDate, startTime, endTime, punish, workingHours, startOverTime, endOverTime, overTimeHours, checkPay, validVac FROM TimeKeeping WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+//            SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
+            if (rs.next()) {
+                return new TimeKeeping(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getInt(6), rs.getFloat(7), rs.getTime(8), rs.getTime(9), rs.getFloat(10), rs.getBoolean(11), rs.getBoolean(12));
+
+            }
+            conn.close();
+            return null;
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Error at model.dao.ContractDB.getTimeKeepingByEmployee()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
+
+    public static void startTime(Employee e) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "INSERT INTO TimeKeeping(employeeId, punish)\n"
+                    + "VALUES(?, ?)";
+            PreparedStatement ps = conn.prepareStatement(query);
+//            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            ps.setInt(1, e.getId());
+            java.time.LocalDateTime d = java.time.LocalDateTime.now();
+            if (d.isAfter(java.time.LocalDateTime.of(d.getYear(), d.getMonthValue(), d.getDayOfMonth(), 8, 0, 0))) {
+                ps.setInt(2, 1);
+            } else {
+                ps.setInt(2, 0);
+            }
+            ps.executeUpdate();
+            conn.commit();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            System.out.println("Error at model.dao.ContractDB.startDate()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
+
+    public static void endTime(TimeKeeping t) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "UPDATE TimeKeeping\n"
+                    + "SET endTime = ?, punish = ?, workingHours = ? WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+//            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            java.time.LocalDateTime d = java.time.LocalDateTime.now();
+            Time endTime = new Time(d.getHour(), d.getMinute(), d.getSecond());
+            ps.setTime(1, endTime);
+            if (d.isBefore(java.time.LocalDateTime.of(d.getYear(), d.getMonthValue(), d.getDayOfMonth(), 17, 0, 0))) {
+                ps.setInt(2, t.getPunish() + 1);
+            } else {
+                ps.setInt(2, t.getPunish());
+            }
+            ps.setDouble(3, (endTime.getTime() - t.getStartTime().getTime()) / 1000 / 60 / 60.0);
+            ps.setInt(4, t.getId());
+            ps.executeUpdate();
+            conn.commit();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            System.out.println("Error at model.dao.ContractDB.endTime()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
+
+    public static float[] rateSalary(Employee e) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "SELECT SUM(workingHours), SUM(punish), SUM(overTimeHours) FROM TimeKeeping\n"
+                    + "WHERE employeeId = ? and checkPay=0 and currentDate < Current_timestamp\n"
+                    + "GROUP BY employeeId";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, e.getId());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                float[] res = {rs.getFloat(1), rs.getInt(2), rs.getFloat(3)};
+                return res;
+            }
+            return null;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            System.out.println("Error at model.dao.ContractDB.endTime()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
+
+    public static void main(String[] args) {
+
+    }
+
+    static void paySalary(int empId) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "UPDATE TimeKeeping\n"
+                    + "SET checkPay = 1\n"
+                    + "WHERE employeeId = ? AND currentDate < Current_timestamp";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, empId);
+            ps.executeUpdate();
+            conn.commit();
+            conn.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            System.out.println("Error at model.dao.TimeKeepingDB.paySalary()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
+}

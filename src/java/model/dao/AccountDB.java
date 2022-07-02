@@ -59,7 +59,7 @@ public class AccountDB implements DBContext {
             String query = "UPDATE Account\n"
                     + "set password = ?\n"
                     + "set roleId = ?\n"
-                    + "where userID = ?";
+                    + "where empId = ?";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, a.getPassword());
             ps.setString(2, a.getUserName());
@@ -87,5 +87,9 @@ public class AccountDB implements DBContext {
             System.out.println("Error at AccountDB.create()");
             throw new RuntimeException("Vui lòng thử lại!");
         }
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(new Account(1005).getFullName());
     }
 }

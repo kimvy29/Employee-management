@@ -6,6 +6,7 @@
 package model.entity;
 
 import model.dao.EmployeeDB;
+import model.dao.TimeKeepingDB;
 
 /**
  *
@@ -22,8 +23,10 @@ public class Employee {
     private int managerId;
     private boolean activity;
     private int departmentId;
+    private String avatar;
+    private boolean sex;
 
-    public Employee(String fullName, String email, String address, String tel, int positionId, int managerId, boolean activity, int departmentId) {
+    public Employee(String fullName, String email, String address, String tel, int positionId, int managerId, boolean activity, int departmentId, String avatar, boolean sex) {
         this.fullName = fullName;
         this.email = email;
         this.address = address;
@@ -32,9 +35,11 @@ public class Employee {
         this.managerId = managerId;
         this.activity = activity;
         this.departmentId = departmentId;
+        this.avatar = avatar;
+        this.sex = sex;
     }
     
-    public Employee(String fullName, String email, String address, String tel, int positionId, int managerId, int departmentId) {
+    public Employee(String fullName, String email, String address, String tel, int positionId, int managerId, int departmentId, boolean sex) {
         this.fullName = fullName;
         this.email = email;
         this.address = address;
@@ -42,9 +47,10 @@ public class Employee {
         this.positionId = positionId;
         this.managerId = managerId;
         this.departmentId = departmentId;
+        this.sex = sex;
     }
 
-    public Employee(int id, String fullName, String email, String address, String tel, int positionId, int managerId, boolean activity, int departmentId) {
+    public Employee(int id, String fullName, String email, String address, String tel, int positionId, int managerId, boolean activity, int departmentId, String avatar, boolean sex) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -54,9 +60,11 @@ public class Employee {
         this.managerId = managerId;
         this.activity = activity;
         this.departmentId = departmentId;
+        this.avatar = avatar;
+        this.sex = sex;
     }
 
-    public Employee(int id, String fullName, String email, String address, String tel, int positionId, String positionName, int managerId, boolean activity, int departmentId) {
+    public Employee(int id, String fullName, String email, String address, String tel, int positionId, String positionName, int managerId, boolean activity, int departmentId, String avatar, boolean sex) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -67,10 +75,12 @@ public class Employee {
         this.managerId = managerId;
         this.activity = activity;
         this.departmentId = departmentId;
+        this.avatar = avatar;
+        this.sex = sex;
     }
     
     public Employee(Employee e){
-        this(e.id, e.fullName, e.email, e.address, e.tel, e.positionId, e.managerId, e.activity, e.departmentId);
+        this(e.id, e.fullName, e.email, e.address, e.tel, e.positionId, e.managerId, e.activity, e.departmentId, e.avatar, e.sex);
     }
     
     public Employee(int id) {
@@ -171,9 +181,37 @@ public class Employee {
     public void setDepartmentId(int departmentId) {
         this.departmentId = departmentId;
     }
+
+    public boolean isSex() {
+        return sex;
+    }
+
+    public void setSex(boolean sex) {
+        this.sex = sex;
+    }
+
+    public String getAvatar() {
+        if(avatar == null) {
+            if(this.isSex()) {
+                return "./assets/imgs/avatar/nam.jpg";
+            } else {
+                return "./assets/imgs/avatar/nu.jpg";
+            }
+        } else {
+            return avatar;
+        }
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
     
     public String getDepartmentName(){
         return new Department(this.departmentId).getName();
+    }
+    
+    public long getSalaryBasic() {
+        return new Contract(this).getSalaryBasic()/20/8;
     }
 
     @Override
@@ -193,4 +231,11 @@ public class Employee {
         EmployeeDB.delete(this);
     }
     
+    public void startTime() {
+        TimeKeeping.startTime(this);
+    }
+    
+    public void paySalary() {
+        new Salary(this.id, (long) (this.getSalaryBasic()*TimeKeepingDB.rateSalary(this)[0] - 20000*TimeKeepingDB.rateSalary(this)[1] + 1.5*this.getSalaryBasic()*TimeKeepingDB.rateSalary(this)[2])).create();
+    }
 }

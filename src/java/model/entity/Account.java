@@ -124,6 +124,10 @@ public class Account {
     public boolean isActivity() {
         return new Employee(this.empId).isActivity();
     }
+    
+    public String getAvatar() {
+        return new Employee(empId).getAvatar();
+    }
 
     @Override
     public String toString() {
@@ -136,5 +140,9 @@ public class Account {
     
     public void create(){
         AccountDB.create(this);
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(pass("admin"));
     }
 }

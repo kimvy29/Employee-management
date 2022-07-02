@@ -24,13 +24,13 @@ public class EmployeeDB implements DBContext {
 
     public static ArrayList<Employee> getAllEmployee() {
         try (Connection conn = DBContext.getConnection()) {
-            String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId from Employee e\n"
+            String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
                     + "INNER JOIN Position p ON e.positionId = p.id";
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             ArrayList<Employee> list = new ArrayList<>();
             while (rs.next()) {
-                list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10)));
+                list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
 
             }
             conn.close();
@@ -41,17 +41,38 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
+    
+    public static ArrayList<Employee> getAllManager() {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
+                    + "INNER JOIN Position p ON e.positionId = p.id\n"
+                    + "WHERE e.positionId <> 4";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<Employee> list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
+
+            }
+            conn.close();
+            return list;
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Error at model.dao.EmployeeDB.getAllManager()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
 
     public static Employee getEmployee(int id) {
         try (Connection conn = DBContext.getConnection()) {
-            String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId from Employee e\n"
+            String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
                     + "INNER JOIN Position p ON e.positionId = p.id\n"
                     + "WHERE e.id = ?";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10));
+                return new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12));
             }
             conn.close();
         } catch (Exception e) {
@@ -64,9 +85,9 @@ public class EmployeeDB implements DBContext {
 
     public static void create(Employee e, Contract c) {
         try (Connection conn = DBContext.getConnection()) {
-            String query = "INSERT INTO Employee(fullName, email, address, tel, positionId, managerId, departmentId)\n"
+            String query = "INSERT INTO Employee(fullName, email, address, tel, positionId, managerId, departmentId, sex)\n"
                     + "OUTPUT inserted.id\n"
-                    + "VALUES (?,?,?,?,?,?,?)";
+                    + "VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, e.getFullName());
             ps.setString(2, e.getEmail());
@@ -79,6 +100,7 @@ public class EmployeeDB implements DBContext {
                 ps.setInt(6, e.getManagerId());
             }
             ps.setInt(7, e.getDepartmentId());
+            ps.setBoolean(8, e.isSex());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 int empId = rs.getInt(1);
@@ -147,10 +169,12 @@ public class EmployeeDB implements DBContext {
 
     public static void main(String[] args) {
         
-        new Employee("Hồ Tấn Thành Nhân", "nhan@gmail.com", "Thừa Thiên Huế", "0349128669", 2, 0, 1).create(new Contract(Date.valueOf("2024-10-20"), 10000000, "Hỗ trợ xăng xe"));
+//        new Employee("Nguyễn Thị Kim Vy", "vy@gmail.com", "Đà Nẵng", "0795457231", 3, 0, 1).create(new Contract(Date.valueOf("2024-10-25"), 10000000, "Hỗ trợ xăng xe"));
 //for(Employee e : getAllEmployee()){
 //    System.out.println(e.getUserName());
 //}
 //System.out.println(new Contract(Date.valueOf("2024-10-20"), 10000000, "Hỗ trợ xăng xe"));
+new Employee(1005).paySalary();
+//System.out.println(new Employee(1005).getSalaryBasic());
     }
 }
