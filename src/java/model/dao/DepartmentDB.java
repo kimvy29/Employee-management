@@ -67,6 +67,7 @@ public class DepartmentDB implements DBContext {
             ps.setString(1, d.getName());
             ps.setInt(2, d.getRoomNo());
             ps.setInt(3, d.getManagerId());
+            ps.setInt(4, d.getId());
             ps.executeUpdate();
             conn.commit();
         } catch (Exception ex) {
