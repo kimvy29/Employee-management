@@ -57,12 +57,13 @@ public class AccountDB implements DBContext {
     public static void update(Account a){
         try (Connection conn = DBContext.getConnection()) {
             String query = "UPDATE Account\n"
-                    + "set password = ?\n"
-                    + "set roleId = ?\n"
+                    + "set password = ?,\n"
+                    + "roleId = ?\n"
                     + "where empId = ?";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, a.getPassword());
-            ps.setString(2, a.getUserName());
+            ps.setInt(2, a.getRoleId());
+            ps.setInt(3, a.getEmpId());
             ps.executeUpdate();
             conn.close();
         } catch (Exception e) {
@@ -90,6 +91,6 @@ public class AccountDB implements DBContext {
     }
     
     public static void main(String[] args) {
-        System.out.println(new Account(1005).getFullName());
+        new Account(1006).changePass("123", "Abc123*");
     }
 }
