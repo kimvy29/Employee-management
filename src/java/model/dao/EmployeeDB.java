@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import model.DBConnect.DBContext;
 import model.entity.Account;
 import model.entity.Contract;
+import model.entity.Department;
 import model.entity.Employee;
 
 /**
@@ -115,6 +116,11 @@ public class EmployeeDB implements DBContext {
                 c.create();
                 a.setUserName(Characters.abbreviation(e.getFullName())+""+empId);
                 a.create();
+                if(e.getPositionId() == 1 || e.getPositionId() == 2) {
+                    Department d = new Department(e.getDepartmentId());
+                    d.setManagerId(empId);
+                    d.update();
+                }
             }
             conn.commit();
             conn.close();
