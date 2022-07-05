@@ -21,10 +21,11 @@ import model.entity.TimeKeeping;
  */
 public class TimeKeepingDB implements DBContext {
 
-    public static ArrayList<TimeKeeping> getTimeKeepingByEmployee(int employeeId) {
+    public static ArrayList<TimeKeeping> getTimeKeepingByEmployee(Employee e) {
         try (Connection conn = DBContext.getConnection()) {
-            String query = "SELECT id, employeeId, currentDate, startTime, endTime, punish, workingHours, startOverTime, endOverTime, overTimeHours, checkPay, validVac FROM TimeKeeping";
+            String query = "SELECT id, employeeId, currentDate, startTime, endTime, punish, workingHours, startOverTime, endOverTime, overTimeHours, checkPay, validVac FROM TimeKeeping WHERE employeeId = ?";
             PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, e.getId());
             ResultSet rs = ps.executeQuery();
             ArrayList<TimeKeeping> list = new ArrayList<>();
 //            SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
@@ -34,8 +35,8 @@ public class TimeKeepingDB implements DBContext {
             }
             conn.close();
             return list;
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (Exception ex) {
+            System.out.println(ex);
             System.out.println("Error at model.dao.ContractDB.getTimeKeepingByEmployee()");
             throw new RuntimeException("Somthing error...");
         }
@@ -129,7 +130,7 @@ public class TimeKeepingDB implements DBContext {
     }
 
     public static void main(String[] args) {
-
+        System.out.println("ádfgh");
     }
 
     static void paySalary(int empId) {

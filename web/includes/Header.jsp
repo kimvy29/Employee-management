@@ -95,6 +95,9 @@
                      <c:if test="${acc.roleId == 1}">
                      <li><a href="create-employee"><i class="fa fa-user-plus green_color"></i> <span>Thêm nhân viên</span></a></li>
                      </c:if>
+                     <c:if test="${acc.roleId == 1 or acc.roleId == 2}">
+                     <li><a href="list-employee"><i class="fa fa-users green_color"></i> <span>Danh sách nhân viên</span></a></li>
+                     </c:if>
                      <li>
                         <a href="#element" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-diamond purple_color"></i> <span>Elements</span></a>
                         <ul class="collapse list-unstyled" id="element">
@@ -104,7 +107,9 @@
                            <li><a href="invoice.html">> <span>Invoice</span></a></li>
                         </ul>
                      </li>
-                     <li><a href="tables.html"><i class="fa fa-table purple_color2"></i> <span>Tables</span></a></li>
+                     <c:if test="${acc.roleId != 1}">
+                     <li><a href="contract-detail?id=${acc.empId}"><i class="fa fa-file purple_color2"></i> <span>Xem hợp đồng</span></a></li>
+                     </c:if>
                      <li>
                         <a href="#apps" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-object-group blue2_color"></i> <span>Apps</span></a>
                         <ul class="collapse list-unstyled" id="apps">

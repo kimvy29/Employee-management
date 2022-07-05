@@ -213,6 +213,22 @@ public class Employee {
     public long getSalaryBasic() {
         return new Contract(this).getSalaryBasic()/20/8;
     }
+    
+    public String getGen() {
+        if(this.isSex()) {
+            return "Nam";
+        } else {
+            return "Nữ";
+        }
+    }
+    
+    public String getBlock() {
+        if(this.activity) {
+            return "Khóa";
+        } else {
+            return "Mở";
+        }
+    }
 
     @Override
     public String toString() {
@@ -237,5 +253,10 @@ public class Employee {
     
     public void paySalary() {
         new Salary(this.id, (long) (this.getSalaryBasic()*TimeKeepingDB.rateSalary(this)[0] - 20000*TimeKeepingDB.rateSalary(this)[1] + 1.5*this.getSalaryBasic()*TimeKeepingDB.rateSalary(this)[2])).create();
+    }
+    
+    public void block() {
+        this.setActivity(!this.isActivity());
+        EmployeeDB.block(this);
     }
 }

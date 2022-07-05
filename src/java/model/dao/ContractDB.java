@@ -59,7 +59,7 @@ public class ContractDB implements DBContext {
         }
         throw new RuntimeException("Hợp Đồng không tồn tại!");
     }
-    
+
     public static Contract GetContractByEmployeeId(int id) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "Select id, employeeId, fromDate, toDate, salaryBasic, note FROM Contract WHERE employeeId = ?";
@@ -86,7 +86,7 @@ public class ContractDB implements DBContext {
             PreparedStatement ps = conn.prepareStatement(query);
             SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
             ps.setInt(1, c.getEmpId());
-            ps.setDate(2, c.getToDate());
+            ps.setDate(2, c.getTDate());
             ps.setLong(3, c.getSalaryBasic());
             ps.setString(4, c.getNote());
             ps.executeUpdate();
@@ -98,8 +98,26 @@ public class ContractDB implements DBContext {
         }
     }
     
+    public static void update(Contract c) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "UPDATE Contract\n"
+                    + "SET toDate = ?, salaryBasic = ?, note = ?\n"
+                    + "WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setDate(1, c.getTDate());
+            ps.setLong(2, c.getSalaryBasic());
+            ps.setString(3, c.getNote());
+            ps.setInt(4, c.getId());
+            ps.executeUpdate();
+            conn.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Error at model.dao.ContractDB.update()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
+
     public static void main(String[] args) {
-//        new Contract(1004,Date.valueOf("2024-10-20"), 10000000, "Hỗ trợ xăng xe").create();
-System.out.println(new Contract(new Employee(1005)));
+        new Contract(8, Date.valueOf("2025-10-10"), 20000000, "ok").update();
     }
 }

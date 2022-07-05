@@ -30,8 +30,8 @@ public class Contract {
         this.note = note;
     }
     
-    public Contract(int empId, Date tDate, long salaryBasic, String note) {
-        this.empId = empId;
+    public Contract(int id, Date tDate, long salaryBasic, String note) {
+        this.id = id;
         this.tDate = tDate;
         this.salaryBasic = salaryBasic;
         this.note = note;
@@ -75,26 +75,32 @@ public class Contract {
         return new Employee(this.empId).getFullName();
     }
 
-    public String getFDate() {
-        SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
+    public String getFrDate() {
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
         return f.format(fDate);
     }
 
-    public void setfDate(Date fDate) {
+    public void setFDate(Date fDate) {
         this.fDate = fDate;
     }
 
-    public String getTDate() {
-        SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
-        return f.format(tDate);
+    public Date getFDate() {
+        return fDate;
     }
 
-    public Date getToDate() {
+
+    public Date getTDate() {
         return tDate;
     }
-    
-    public void settDate(Date tDate) {
+
+    public void setTDate(Date tDate) {
         this.tDate = tDate;
+    }    
+    
+
+    public String getToDate() {
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        return f.format(tDate);
     }
 
     public long getSalaryBasic() {
@@ -122,4 +128,11 @@ public class Contract {
         ContractDB.create(this);
     }
     
+    public void update() {
+        ContractDB.update(this);
+    }
+    
+    public String getUserName() {
+        return new Account(empId).getUserName();
+    }
 }    

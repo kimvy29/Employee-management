@@ -42,13 +42,6 @@
 
         </div>
 
-        <!-- graph -->
-
-        <!-- end graph -->
-
-
     </div>
-    <!-- footer -->
-
 
 <%@include file="includes/Footer.jsp" %>

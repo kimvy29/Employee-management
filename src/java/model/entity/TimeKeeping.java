@@ -75,8 +75,8 @@ public class TimeKeeping {
         this(TimeKeepingDB.getTimeKeeping(id));
     }
     
-    public TimeKeeping(int employeeId, String time) {
-        this.employeeId = employeeId;
+    public TimeKeeping(Employee e) {
+        this.employeeId = e.getId();
     }
 
     public int getId() {
