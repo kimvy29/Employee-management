@@ -80,7 +80,7 @@ public class Employee {
     }
     
     public Employee(Employee e){
-        this(e.id, e.fullName, e.email, e.address, e.tel, e.positionId, e.managerId, e.activity, e.departmentId, e.avatar, e.sex);
+        this(e.id, e.fullName, e.email, e.address, e.tel, e.positionId, e.positionName, e.managerId, e.activity, e.departmentId, e.avatar, e.sex);
     }
     
     public Employee(int id) {
@@ -208,6 +208,10 @@ public class Employee {
     
     public String getDepartmentName(){
         return new Department(this.departmentId).getName();
+    }
+    
+    public int getDepartmentRoomNo(){
+        return new Department(this.departmentId).getRoomNo();
     }
     
     public long getSalaryBasic() {

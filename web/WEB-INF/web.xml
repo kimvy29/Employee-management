@@ -28,6 +28,10 @@
         <servlet-name>ContractDetail</servlet-name>
         <servlet-class>controller.ContractDetail</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Profile</servlet-name>
+        <servlet-class>controller.Profile</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>ContractDetail</servlet-name>
         <url-pattern>/contract-detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Profile</servlet-name>
+        <url-pattern>/profile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

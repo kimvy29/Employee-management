@@ -160,7 +160,7 @@ public class EmployeeDB implements DBContext {
     public static void update(Employee e) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "UPDATE Employee\n"
-                    + "SET fullName = ?, email = ?, address = ?, tel = ?, positionId = ?, managerId = ?, activity = ?, departmentId = ?\n"
+                    + "SET fullName = ?, email = ?, address = ?, tel = ?, positionId = ?, managerId = ?, activity = ?, departmentId = ?, avatar = ?\n"
                     + "WHERE id = ?";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, e.getFullName());
@@ -168,6 +168,8 @@ public class EmployeeDB implements DBContext {
             ps.setString(3, e.getAddress());
             ps.setString(4, e.getTel());
             ps.setInt(5, e.getPositionId());
+            System.out.println(e.getAvatar());
+            ps.setString(9, e.getAvatar());
             if(e.getManagerId() == 0) {
                 ps.setString(6, null);
             } else {
@@ -175,7 +177,7 @@ public class EmployeeDB implements DBContext {
             }
             ps.setBoolean(7, e.isActivity());
             ps.setInt(8, e.getDepartmentId());
-            ps.setInt(9, e.getId());
+            ps.setInt(10, e.getId());
             ps.executeUpdate();
             conn.commit();
         } catch (Exception ex) {
@@ -225,8 +227,7 @@ public class EmployeeDB implements DBContext {
 //System.out.println(new Contract(Date.valueOf("2024-10-20"), 10000000, "Hỗ trợ xăng xe"));
 //new Employee(1005).paySalary();
 //System.out.println(new Employee(1005).getSalaryBasic());
-for(Employee e : getAllEmployee()) {
-    System.out.println(e);
-}
+SimpleDateFormat f = new SimpleDateFormat("yyyyMMddHHmmss");
+        java.util.Date date=new java.util.Date();   System.out.println(f.format(date));  
     }
 }
