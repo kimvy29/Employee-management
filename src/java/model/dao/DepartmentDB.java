@@ -66,7 +66,11 @@ public class DepartmentDB implements DBContext {
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, d.getName());
             ps.setInt(2, d.getRoomNo());
-            ps.setInt(3, d.getManagerId());
+            if(d.getManagerId() == 0) {
+                ps.setString(3, null);
+            } else {
+                ps.setInt(3, d.getManagerId());
+            }
             ps.setInt(4, d.getId());
             ps.executeUpdate();
             conn.commit();

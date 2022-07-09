@@ -63,9 +63,9 @@
     2. import files
 -------------------------------------------------------------------*/
 
-@import url(css/animate.css);
-@import url(css/flaticon.css);
-@import url(css/font-awesome.min.css);
+@import url(./animate.css);
+@import url(./flaticon.css);
+@import url(./font-awesome.min.css);
 
 /*------------------------------------------------------------------
     3. basic
@@ -81,7 +81,7 @@ html,
 body {
     color: #898989;
     font-size: 14px;
-    font-family: 'Poppins', sans-serif;
+    font-family: Arial, Helvetica, sans-serif!important;
     line-height: normal;
     font-weight: 300;
     overflow-x: hidden !important;
@@ -159,8 +159,8 @@ h1 {
 }
 
 .img-responsive {
-    width: 100%;
-    height: 100%;
+    width: 75px;
+    height: 75px;
 }
 
 h3 {

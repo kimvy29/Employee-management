@@ -32,6 +32,22 @@
         <servlet-name>Profile</servlet-name>
         <servlet-class>controller.Profile</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateEmployee</servlet-name>
+        <servlet-class>controller.UpdateEmployee</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateDepartment</servlet-name>
+        <servlet-class>controller.CreateDepartment</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListDepartment</servlet-name>
+        <servlet-class>controller.ListDepartment</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateDepartment</servlet-name>
+        <servlet-class>controller.UpdateDepartment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -63,6 +79,22 @@
     <servlet-mapping>
         <servlet-name>Profile</servlet-name>
         <url-pattern>/profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateEmployee</servlet-name>
+        <url-pattern>/update-employee</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateDepartment</servlet-name>
+        <url-pattern>/create-department</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListDepartment</servlet-name>
+        <url-pattern>/list-department</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateDepartment</servlet-name>
+        <url-pattern>/update-department</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

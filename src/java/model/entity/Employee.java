@@ -5,6 +5,7 @@
  */
 package model.entity;
 
+import model.dao.Characters;
 import model.dao.EmployeeDB;
 import model.dao.TimeKeepingDB;
 
@@ -50,7 +51,7 @@ public class Employee {
         this.sex = sex;
     }
 
-    public Employee(int id, String fullName, String email, String address, String tel, int positionId, int managerId, boolean activity, int departmentId, String avatar, boolean sex) {
+    public Employee(int id, String fullName, String email, String address, String tel, int positionId, int managerId, boolean activity, int departmentId, boolean sex) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -103,7 +104,7 @@ public class Employee {
     }
 
     public String getFullName() {
-        return fullName;
+        return Characters.conver(fullName);
     }
 
     public void setFullName(String fullName) {
@@ -119,7 +120,7 @@ public class Employee {
     }
 
     public String getAddress() {
-        return address;
+        return Characters.conver(address);
     }
 
     public void setAddress(String address) {
@@ -234,10 +235,10 @@ public class Employee {
         }
     }
 
-    @Override
-    public String toString() {
-        return "Employee{" + "id=" + id + ", fullName=" + fullName + ", email=" + email + ", address=" + address + ", tel=" + tel + ", positionId=" + positionId + ", managerId=" + managerId + ", activity=" + activity + ", departmentId=" + departmentId + '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Employee{" + "id=" + id + ", fullName=" + fullName + ", email=" + email + ", address=" + address + ", tel=" + tel + ", positionId=" + positionId + ", positionName=" + positionName + ", managerId=" + managerId + ", activity=" + activity + ", departmentId=" + departmentId + ", avatar=" + avatar + ", sex=" + sex + '}';
+//    }
     
     public void create(Contract c){
         EmployeeDB.create(this, c);

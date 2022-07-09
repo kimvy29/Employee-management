@@ -32,6 +32,7 @@
                             <th scope="col">Chức vụ</th>
                                 <c:if test="${acc.roleId == 1}">
                                 <th scope="col">Khóa tài khoản</th>
+                                <th scope="col">Update</th>
                                 </c:if>
                         </tr>
                     </thead>
@@ -47,6 +48,7 @@
                                 <td>${l.positionName}</td>
                                 <c:if test="${acc.roleId == 1}">
                                     <td><a id="block${l.id}" onclick="block(${l.id})" style="cursor: pointer">${l.block}</a></td>
+                                    <td><a href="update-employee?id=${l.id}">Update</a></td>
                                     </c:if>
                             </tr>
                         </c:forEach>               
