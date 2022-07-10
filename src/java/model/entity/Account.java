@@ -143,6 +143,6 @@ public class Account {
     }
     
     public static void main(String[] args) {
-        System.out.println(pass("admin"));
+        System.out.println(pass("ceo"));
     }
 }

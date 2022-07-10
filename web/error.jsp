@@ -49,13 +49,13 @@
                <div class="error_page">
                   <div class="center">
                      <div class="error_icon">
-                         <img class="img-responsive" src="assets/imgs/layout_img/error.png" alt="#">
+                         <img class="img-responsive" style="width: 100%; height: 100%" src="assets/imgs/layout_img/error.png" alt="#">
                      </div>
                   </div>
                   <br>
-                  <h3>PAGE NOT FOUND !</h3>
-                  <P><%=exception.getMessage()%></P>
-                  <div class="center"><a class="main_bt" onclick="javascript:history.go(-1);">Quay lại</a></div>
+                  <h3 style="font-size: 30px"><%=exception.getMessage()%></h3>
+                  <P></P>
+                  <div class="center"><a class="main_bt" style="color: black" onclick="javascript:history.go(-1);">Quay lại</a></div>
                </div>
             </div>
          </div>

@@ -7,22 +7,18 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.dao.DepartmentDB;
-import model.dao.EmployeeDB;
 import model.entity.Account;
-import model.entity.Contract;
-import model.entity.Employee;
 
 /**
  *
  * @author ACER
  */
-public class CreateEmployee extends HttpServlet {
+public class ListDepartment extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +37,10 @@ public class CreateEmployee extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateEmployee</title>");            
+            out.println("<title>Servlet ListDepartment</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CreateEmployee at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ListDepartment at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -67,10 +63,9 @@ public class CreateEmployee extends HttpServlet {
             Account a = (Account) request.getSession().getAttribute("acc");
             if (a != null) {
                 int type = a.getRoleId();
-                if(type == 1) {
-                    request.setAttribute("department", DepartmentDB.getAllDepartment());
-                    request.setAttribute("manager", EmployeeDB.getAllManager());
-                    request.getRequestDispatcher("CreateEmployee.jsp").include(request, response);
+                if (type == 1) {
+                    request.setAttribute("list", DepartmentDB.getAllDepartment());
+                    request.getRequestDispatcher("ListDepartment.jsp").include(request, response);
                 } else {
                     response.sendRedirect("home");
                 }
@@ -93,21 +88,7 @@ public class CreateEmployee extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("utf-8");
-        String fullName = request.getParameter("fullName");
-        String email = request.getParameter("email");
-        String address = request.getParameter("address");
-        String tel = request.getParameter("tel");
-        int positionId = Integer.parseInt(request.getParameter("positionId"));
-        int managerId = Integer.parseInt(request.getParameter("managerId"));
-        int departmentId = Integer.parseInt(request.getParameter("departmentId"));
-        boolean sex = Boolean.parseBoolean(request.getParameter("sex"));
-        long basicSalary = Long.parseLong(request.getParameter("basicSalary"));
-        String tDate = request.getParameter("tDate");
-        String note = request.getParameter("note");
-        new Employee(fullName, email, address, tel, positionId, managerId, departmentId, sex).create(new Contract(Date.valueOf(tDate), basicSalary, note));
-        response.sendRedirect("list-employee");
+        processRequest(request, response);
     }
 
     /**
