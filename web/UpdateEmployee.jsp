@@ -36,7 +36,7 @@
                             <td><input style="border: none; background: none" type="email" name="email" value="${e.email}"></td>
                         </tr>
                         <tr>
-                            <th scope="col">Email</th>
+                            <th scope="col">Số điện thoại</th>
                             <td><input style="border: none; background: none" type="number" name="tel" value="${e.tel}"></td>
                         </tr>
                         <tr>

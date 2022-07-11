@@ -122,6 +122,9 @@
                                     </ul>
                                 </li>
                             </c:if>
+                            <c:if test="${(acc.roleId == 2 or acc.roleId == 3) and acc.positionId != 1}">
+                                <li><a href="check-in"><i class="fa fa-location-arrow yellow_color"></i> <span>Chấm công</span></a></li>
+                                </c:if>
 
                             <!--                            <li>
                                                             <a href="#element" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-diamond purple_color"></i> <span>Elements</span></a>
@@ -140,31 +143,31 @@
                                                                 <li><a href="media_gallery.html">> <span>Media Gallery</span></a></li>
                                                             </ul>
                                                         </li>-->
-                            <!--                            <li><a href="price.html"><i class="fa fa-briefcase blue1_color"></i> <span>Pricing Tables</span></a></li>
-                                                        <li>
-                                                            <a href="contact.html">
-                                                                <i class="fa fa-paper-plane red_color"></i> <span>Contact</span></a>
-                                                        </li>
-                                                        <li class="active">
-                                                            <a href="#additional_page" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-clone yellow_color"></i> <span>Additional Pages</span></a>
-                                                            <ul class="collapse list-unstyled" id="additional_page">
-                                                                <li>
-                                                                    <a href="profile.html">> <span>Profile</span></a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="project.html">> <span>Projects</span></a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="login.html">> <span>Login</span></a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="404_error.html">> <span>404 Error</span></a>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                        <li><a href="map.html"><i class="fa fa-map purple_color2"></i> <span>Map</span></a></li>
-                                                        <li><a href="charts.html"><i class="fa fa-bar-chart-o green_color"></i> <span>Charts</span></a></li>
-                                                        <li><a href="settings.html"><i class="fa fa-cog yellow_color"></i> <span>Settings</span></a></li>-->
+                            <!--                                                        <li><a href="price.html"><i class="fa fa-briefcase blue1_color"></i> <span>Pricing Tables</span></a></li>
+                                                                                    <li>
+                                                                                        <a href="contact.html">
+                                                                                            <i class="fa fa-paper-plane red_color"></i> <span>Contact</span></a>
+                                                                                    </li>
+                                                                                    <li class="active">
+                                                                                        <a href="#additional_page" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-clone yellow_color"></i> <span>Additional Pages</span></a>
+                                                                                        <ul class="collapse list-unstyled" id="additional_page">
+                                                                                            <li>
+                                                                                                <a href="profile.html">> <span>Profile</span></a>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <a href="project.html">> <span>Projects</span></a>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <a href="login.html">> <span>Login</span></a>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <a href="404_error.html">> <span>404 Error</span></a>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </li>
+                                                                                    
+                                                                                    <li><a href="charts.html"><i class="fa fa-bar-chart-o green_color"></i> <span>Charts</span></a></li>
+                                                                                    <li><a href="settings.html"><i class="fa fa-cog yellow_color"></i> <span>Settings</span></a></li>-->
                         </ul>
                     </div>
                 </nav>

@@ -11,15 +11,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.dao.EmployeeDB;
+import model.dao.TimeKeepingDB;
 import model.entity.Account;
 import model.entity.Employee;
+import model.entity.TimeKeeping;
 
 /**
  *
  * @author ACER
  */
-public class ListEmployee extends HttpServlet {
+public class CheckIn extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +39,10 @@ public class ListEmployee extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListAccount</title>");
+            out.println("<title>Servlet CheckIn</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListAccount at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CheckIn at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -66,18 +67,19 @@ public class ListEmployee extends HttpServlet {
                 int type = a.getRoleId();
                 switch (type) {
                     case 1: {
-                        request.setAttribute("list", EmployeeDB.getAllEmployee());
-                        request.getRequestDispatcher("ListEmployee.jsp").include(request, response);
-                        break;
-                    }
-                    case 2: {
-                        request.setAttribute("list", EmployeeDB.getAllEmployeeByManagerId(a.getEmpId()));
-                        request.getRequestDispatcher("ListEmployee.jsp").include(request, response);
-                        break;
-                    }
-                    case 3: {
                         response.sendRedirect("home");
                         break;
+                    }
+                    case 2:
+                    case 3: {
+                        if (a.getPositionId() == 1) {
+                            response.sendRedirect("home");
+                            break;
+                        } else {
+                            request.setAttribute("list", TimeKeepingDB.getTimeKeepingByEmployee(new Employee(a.getEmpId())));
+                            request.getRequestDispatcher("CheckIn.jsp").include(request, response);
+                            break;
+                        }
                     }
                     default:
                         response.sendRedirect("home");
@@ -102,22 +104,7 @@ public class ListEmployee extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("utf-8");
-        Account a = (Account) request.getSession().getAttribute("acc");
-        if (a.getRoleId() == 1) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            int type = Integer.parseInt(request.getParameter("type"));
-            if(type == 1) {
-                new Employee(id).block();    
-            } else {
-                new Account(id).reset();
-            }
-            
-        } else {
-            response.sendRedirect("home");
-        }
-
+        processRequest(request, response);
     }
 
     /**

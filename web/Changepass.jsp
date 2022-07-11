@@ -32,6 +32,10 @@
                             <input type="password" name="newPass" id="newPass" class="form-control" autocomplete="off" required>
                         </div>
                         <div class="form-group">
+                            <label for="rePass" class="text-info">Nhập lại mật khẩu mới:</label><br>
+                            <input type="password" name="rePass" id="rePass" class="form-control" autocomplete="off" required>
+                        </div>
+                        <div class="form-group">
                             <br>
                             <input type="submit" name="submit" class="btn btn-info btn-md" value="Đồng ý">
                         </div>

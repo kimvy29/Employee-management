@@ -254,11 +254,12 @@ public class EmployeeDB implements DBContext {
 //        System.out.println(new Contract(Date.valueOf("2024-10-20"), 10000000, "Hỗ trợ xăng xe"));
 //        new Employee(1005).paySalary();
 //        System.out.println(new Employee(1005).getSalaryBasic());
-        for (Employee e : getAllEmployee()) {
-            System.out.println(e);
-        }
-        System.out.println("---");
-        System.out.println(EmployeeDB.getAllEmployee().get(0));
-        System.out.println(EmployeeDB.getAllEmployee().indexOf(EmployeeDB.getAllEmployee().get(0)));
+//        for (Employee e : getAllEmployee()) {
+//            System.out.println(e);
+//        }
+//        System.out.println("---");
+//        System.out.println(EmployeeDB.getAllEmployee().get(0));
+//        System.out.println(EmployeeDB.getAllEmployee().indexOf(EmployeeDB.getAllEmployee().get(0)));
+new Employee(1002).startTime();
     }
 }

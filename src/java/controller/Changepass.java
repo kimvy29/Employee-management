@@ -84,9 +84,14 @@ public class Changepass extends HttpServlet {
             throws ServletException, IOException {
         String oldPass = request.getParameter("oldPass");
         String newPass = request.getParameter("newPass");
-        Account a = (Account) request.getSession().getAttribute("acc");
-        a.changePass(oldPass, newPass);
-        response.sendRedirect("profile");
+        String rePass = request.getParameter("rePass");
+        if (!newPass.equals(rePass)) {
+            throw new RuntimeException("Mật khẩu nhập lại không khớp!");
+        } else {
+            Account a = (Account) request.getSession().getAttribute("acc");
+            a.changePass(oldPass, newPass);
+            response.sendRedirect("profile");
+        }
     }
 
     /**

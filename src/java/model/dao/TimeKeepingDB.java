@@ -130,7 +130,7 @@ public class TimeKeepingDB implements DBContext {
     }
 
     public static void main(String[] args) {
-        System.out.println("ádfgh");
+        new TimeKeeping(1).endTime();
     }
 
     static void paySalary(int empId) {

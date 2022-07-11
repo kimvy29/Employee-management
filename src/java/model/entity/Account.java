@@ -128,6 +128,10 @@ public class Account {
     public String getAvatar() {
         return new Employee(empId).getAvatar();
     }
+    
+    public int getPositionId(){
+        return new Employee(empId).getPositionId();
+    }
 
     @Override
     public String toString() {
@@ -140,6 +144,10 @@ public class Account {
     
     public void create(){
         AccountDB.create(this);
+    }
+    
+    public void reset() {
+        AccountDB.reset(this);
     }
     
     public static void main(String[] args) {

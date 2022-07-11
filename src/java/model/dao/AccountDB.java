@@ -90,6 +90,23 @@ public class AccountDB implements DBContext {
         }
     }
     
+    public static void reset(Account a) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "UPDATE ACCOUNT\n"
+                    + "SET password = ?\n"
+                    + "WHERE empId = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, "EC98138A6CC21276570E1016F91FB1812801168149D19C7CE314551F835C9C1D");
+            ps.setInt(2, a.getEmpId());
+            ps.executeUpdate();
+            conn.close();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Error at AccountDB.reset()");
+            throw new RuntimeException("Có lỗi xảy ra, vui lòng thử lại!");
+        }
+    }
+    
     public static void main(String[] args) {
         new Account(1006).changePass("123", "Abc123*");
     }
