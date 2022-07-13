@@ -76,7 +76,25 @@ public class CheckIn extends HttpServlet {
                             response.sendRedirect("home");
                             break;
                         } else {
-                            request.setAttribute("current", TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(a.getEmpId())));
+                            TimeKeeping current = TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(a.getEmpId()));
+                            String checkIn = "disabled";
+                            String checkOut = "disabled";
+                            String checkInOverTime = "disabled";
+                            String checkOutOverTime = "disabled";
+                            if (current == null) {
+                                checkIn = "";
+                            } else if (current.getStartTime() != null && current.getEndTime() == null) {
+                                checkOut = "";
+                            } else if (current.getStartTime() != null && current.getEndTime() != null && current.getStartOverTime() == null) {
+                                checkInOverTime = "";
+                            } else if (current.getStartTime() != null && current.getEndTime() != null && current.getStartOverTime() != null && current.getEndOverTime() == null) {
+                                checkOutOverTime = "";
+                            }
+                            request.setAttribute("checkIn", checkIn);
+                            request.setAttribute("checkOut", checkOut);
+                            request.setAttribute("checkInOverTime", checkInOverTime);
+                            request.setAttribute("checkOutOverTime", checkOutOverTime);
+                            request.setAttribute("current", current);
                             request.setAttribute("list", TimeKeepingDB.getTimeKeepingByEmployee(new Employee(a.getEmpId())));
                             request.getRequestDispatcher("CheckIn.jsp").include(request, response);
                             break;
@@ -107,24 +125,34 @@ public class CheckIn extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
         Account a = (Account) request.getSession().getAttribute("acc");
         int id = a.getEmpId();
-        String action = request.getParameter("action");
-        switch (action) {
-            case "Check-in":
+        int type = Integer.parseInt(request.getParameter("type"));
+        switch (type) {
+            case 1:
                 new Employee(id).startTime();
                 break;
-            case "Check-out":
+            case 2:
                 new TimeKeeping(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getId()).endTime();
                 break;
-            case "Check-in-overtime":
+            case 3:
                 new TimeKeeping(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getId()).startOverTime();
                 break;
-            case "Check-out-overtime":
+            case 4:
                 new TimeKeeping(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getId()).endOverTime();
                 break;
         }
-        response.sendRedirect("check-in");
+        for (TimeKeeping t : TimeKeepingDB.getTimeKeepingByEmployee(new Employee(a.getEmpId()))) {
+            out.println("<tr>");
+            out.println("<td>" + t.getCurrentDate() + "</td>");
+            out.println("<td>" + t.getStartTime() + "</td>");
+            out.println("<td>" + (t.getEndTime() != null ? t.getEndTime() : "") + "</td>");
+            out.println("<td>" + t.getPunish() + "</td>");
+            out.println("<td>" + (t.getStartOverTime() != null ? t.getStartOverTime() : "") + "</td>");
+            out.println("<td>" + (t.getEndOverTime() != null ? t.getEndOverTime() : "") + "</td>");
+            out.println("</tr>");
+        }
     }
 
     /**

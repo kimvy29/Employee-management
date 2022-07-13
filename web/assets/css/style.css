@@ -2110,6 +2110,11 @@ button.main_bt {
     opacity: 0.4;
 }
 
+button:disabled{
+    background: rgba(0,0,0,0.5)!important;
+    border-color: rgba(0,0,0,0.5)!important
+}
+
 .calendar tr {
     position: relative;
 }

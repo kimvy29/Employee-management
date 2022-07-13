@@ -28,7 +28,8 @@ public class EmployeeDB implements DBContext {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
                     + "INNER JOIN Account a ON e.id = a.empId\n"
                     + "INNER JOIN Position p on p.id = e.positionId\n"
-                    + "WHERE a.roleId <> 1 and p.id <> 1";
+                    + "WHERE a.roleId <> 1 and p.id <> 1\n"
+                    + "ORDER BY e.id";
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             ArrayList<Employee> list = new ArrayList<>();
@@ -49,7 +50,8 @@ public class EmployeeDB implements DBContext {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
                     + "INNER JOIN Position p ON e.positionId = p.id\n"
-                    + "WHERE e.managerId = ?";
+                    + "WHERE e.managerId = ?\n"
+                    + "ORDER BY e.id";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, managerId);
             ResultSet rs = ps.executeQuery();

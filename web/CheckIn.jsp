@@ -19,20 +19,10 @@
             </div>
             <div class="col-md-12">
                 <div class="page_title">
-                    <form action="check-in" method="POST">
-                        <c:if test="${current == null}">
-                            <input type="submit" name="action" value="Check-in" class="btn btn-success">
-                        </c:if>
-                        <c:if test="${current.startTime != null and current.endTime == null}">
-                            <input type="submit" name="action" value="Check-out" class="btn btn-danger">
-                        </c:if>
-                        <c:if test="${current.startTime != null and current.endTime != null and current.startOverTime == null}">
-                            <input type="submit" name="action" value="Check-in-overtime" class="btn btn-success">
-                        </c:if>
-                            <c:if test="${current.startTime != null and current.endTime != null and current.startOverTime != null and current.endOverTime == null}">
-                            <input type="submit" name="action" value="Check-out-overtime" class="btn btn-danger">
-                        </c:if>
-                    </form>
+                    <button class="btn btn-success" onclick="timeKeeping(1)" id="checkIn" ${checkIn}>Check-in</button>
+                    <button class="btn btn-danger" onclick="timeKeeping(2)" id="checkOut" ${checkOut}>Check-out</button>
+                    <button class="btn btn-success" onclick="timeKeeping(3)" id="checkInOverTime" ${checkInOverTime}>Check-in-overtime</button>
+                    <button class="btn btn-danger" onclick="timeKeeping(4)" id="checkOutOverTime" ${checkOutOverTime}>Check-out-overtime</button>
                 </div>
             </div>
         </div>
@@ -49,7 +39,7 @@
                             <th scope="col">End over time</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="data">
                         <c:forEach items="${list}" var="l">            
                             <tr>
                                 <td>${l.currentDate}</td>
@@ -65,5 +55,32 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        function timeKeeping(type){
+            $.ajax({
+                url: '/employee-management/check-in',
+                type: 'POST',
+                data: {
+                    type: type
+                },
+                success: function (data) {
+                    if(type == 1) {
+                        document.getElementById("checkIn").disabled = "true";
+                        document.getElementById("checkOut").removeAttribute("disabled");
+                    } else if(type == 2) {
+                        document.getElementById("checkOut").disabled = "true";
+                        document.getElementById("checkInOverTime").removeAttribute("disabled");
+                    } else if(type == 3) {
+                        document.getElementById("checkInOverTime").disabled = "true";
+                        document.getElementById("checkOutOverTime").removeAttribute("disabled");
+                    } else {
+                        document.getElementById("checkOutOverTime").disabled = "true";
+                    }
+                    document.getElementById("data").innerHTML = data;
+                }
+            });
+        }
+    </script>
 
     <%@include file="includes/Footer.jsp" %>

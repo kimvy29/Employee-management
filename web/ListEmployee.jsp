@@ -80,8 +80,10 @@
                     
                     if (status.trim() == "Khóa") {
                         document.getElementById("block" + id).innerHTML = "Mở";
+                        alert("Khóa tài khoản của nhân viên "+fullName+" thành công!");
                     } else {
                         document.getElementById("block" + id).innerHTML = "Khóa";
+                        alert("Mở tài khoản của nhân viên "+fullName+" thành công!");
                     }
                 }
             });
