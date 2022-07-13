@@ -188,4 +188,12 @@ public class TimeKeeping {
     public void endTime() {
         TimeKeepingDB.endTime(this);
     }
+    
+    public void startOverTime() {
+        TimeKeepingDB.startOverTime(this);
+    }
+    
+    public void endOverTime() {
+        TimeKeepingDB.endOverTime(this);
+    }
 }

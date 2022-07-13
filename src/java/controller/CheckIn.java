@@ -76,6 +76,7 @@ public class CheckIn extends HttpServlet {
                             response.sendRedirect("home");
                             break;
                         } else {
+                            request.setAttribute("current", TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(a.getEmpId())));
                             request.setAttribute("list", TimeKeepingDB.getTimeKeepingByEmployee(new Employee(a.getEmpId())));
                             request.getRequestDispatcher("CheckIn.jsp").include(request, response);
                             break;
@@ -104,7 +105,26 @@ public class CheckIn extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
+        Account a = (Account) request.getSession().getAttribute("acc");
+        int id = a.getEmpId();
+        String action = request.getParameter("action");
+        switch (action) {
+            case "Check-in":
+                new Employee(id).startTime();
+                break;
+            case "Check-out":
+                new TimeKeeping(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getId()).endTime();
+                break;
+            case "Check-in-overtime":
+                new TimeKeeping(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getId()).startOverTime();
+                break;
+            case "Check-out-overtime":
+                new TimeKeeping(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getId()).endOverTime();
+                break;
+        }
+        response.sendRedirect("check-in");
     }
 
     /**

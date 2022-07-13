@@ -23,7 +23,8 @@ public class TimeKeepingDB implements DBContext {
 
     public static ArrayList<TimeKeeping> getTimeKeepingByEmployee(Employee e) {
         try (Connection conn = DBContext.getConnection()) {
-            String query = "SELECT id, employeeId, currentDate, startTime, endTime, punish, workingHours, startOverTime, endOverTime, overTimeHours, checkPay, validVac FROM TimeKeeping WHERE employeeId = ?";
+            String query = "SELECT id, employeeId, currentDate, startTime, endTime, punish, workingHours, startOverTime, endOverTime, overTimeHours, checkPay, validVac FROM TimeKeeping WHERE employeeId = ?\n"
+                    + "ORDER by id DESC";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, e.getId());
             ResultSet rs = ps.executeQuery();
@@ -40,6 +41,29 @@ public class TimeKeepingDB implements DBContext {
             System.out.println("Error at model.dao.ContractDB.getTimeKeepingByEmployee()");
             throw new RuntimeException("Somthing error...");
         }
+    }
+
+    public static TimeKeeping getTimeKeepingByEmployeeAndCurrentDate(Employee e) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "SELECT id, employeeId, currentDate, startTime, endTime, punish, workingHours, startOverTime, endOverTime, overTimeHours, checkPay, validVac FROM TimeKeeping WHERE currentDate = ? AND employeeId = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            long millis = System.currentTimeMillis();
+            java.sql.Date date = new java.sql.Date(millis);
+            ps.setString(1, f.format(date));
+            ps.setInt(2, e.getId());
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new TimeKeeping(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getInt(6), rs.getFloat(7), rs.getTime(8), rs.getTime(9), rs.getFloat(10), rs.getBoolean(11), rs.getBoolean(12));
+            }
+            conn.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            System.out.println("Error at model.dao.ContractDB.getTimeKeepingByEmployee()");
+            throw new RuntimeException("Somthing error...");
+        }
+        return null;
     }
 
     public static TimeKeeping getTimeKeeping(int id) {
@@ -109,6 +133,45 @@ public class TimeKeepingDB implements DBContext {
         }
     }
 
+    public static void startOverTime(TimeKeeping t) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "UPDATE TimeKeeping\n"
+                    + "SET startOverTime = ? WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+//            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            java.time.LocalDateTime d = java.time.LocalDateTime.now();
+            Time startOverTime = new Time(d.getHour(), d.getMinute(), d.getSecond());
+            ps.setTime(1, startOverTime);
+            ps.setInt(2, t.getId());
+            ps.executeUpdate();
+            conn.commit();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            System.out.println("Error at model.dao.ContractDB.startOverTime()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
+
+    public static void endOverTime(TimeKeeping t) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "UPDATE TimeKeeping\n"
+                    + "SET endOverTime = ?, overTimeHours = ? WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+//            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            java.time.LocalDateTime d = java.time.LocalDateTime.now();
+            Time endOverTime = new Time(d.getHour(), d.getMinute(), d.getSecond());
+            ps.setTime(1, endOverTime);
+            ps.setDouble(2, (endOverTime.getTime() - t.getStartOverTime().getTime()) / 1000 / 60 / 60.0);
+            ps.setInt(3, t.getId());
+            ps.executeUpdate();
+            conn.commit();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            System.out.println("Error at model.dao.ContractDB.endOverTime()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
+
     public static float[] rateSalary(Employee e) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT SUM(workingHours), SUM(punish), SUM(overTimeHours) FROM TimeKeeping\n"
@@ -129,10 +192,6 @@ public class TimeKeepingDB implements DBContext {
         }
     }
 
-    public static void main(String[] args) {
-        new TimeKeeping(1).endTime();
-    }
-
     static void paySalary(int empId) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "UPDATE TimeKeeping\n"
@@ -148,5 +207,9 @@ public class TimeKeepingDB implements DBContext {
             System.out.println("Error at model.dao.TimeKeepingDB.paySalary()");
             throw new RuntimeException("Somthing error...");
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(1002)));
     }
 }
