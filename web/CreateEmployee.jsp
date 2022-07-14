@@ -39,27 +39,24 @@
                         </div>
                         <div class="form-group">
                             <label for="positionId" class="text-info">Chức vụ:</label><br>
-                            <select class="form-control" name="positionId" id="positionId">
-                                <option value="2">Trưởng phòng</option>
+                            <select class="form-control" name="positionId" id="positionId" onchange="change(1)">
+                                <option value="2" selected>Trưởng phòng</option>
                                 <option value="3">Quản lý</option>
-                                <option value="4" selected>Nhân viên</option>
+                                <option value="4">Nhân viên</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="departmentId" class="text-info">Phòng ban:</label><br>
+                            <select class="form-control" name="departmentId" id="departmentId" onchange="change(2)">
+                                <c:forEach items="${department}" var="d">
+                                    <option value="${d.id}">${d.name}</option>
+                                </c:forEach>      
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="managerId" class="text-info">Người quản lý:</label><br>
                             <select class="form-control" name="managerId" id="managerId">
-                                <option value="0">--------------------</option>
-                                <c:forEach items="${manager}" var="m">
-                                    <option value="${m.id}">${m.fullName}</option>
-                                </c:forEach>      
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="departmentId" class="text-info">Phòng ban:</label><br>
-                            <select class="form-control" name="departmentId" id="departmentId">
-                                <c:forEach items="${department}" var="d">
-                                    <option value="${d.id}">${d.name}</option>
-                                </c:forEach>      
+                                <option value='1001'>Ceo</option>     
                             </select>
                         </div>
                         <div class="form-group">
@@ -102,5 +99,41 @@
 
     </div>
     <!-- footer -->
+    <script>
+        let positionId = 0;
+        let departmentId = 0;
+        function getPositionId() {
+            positionId = document.getElementById("positionId").value;
+        }
 
+        function getDepartmentId() {
+            departmentId = document.getElementById("departmentId").value;
+
+            
+        }
+
+        function change(type) {
+            getPositionId();
+            getDepartmentId();
+            console.log(positionId);
+            console.log(departmentId);
+            $.ajax({
+                url: '/employee-management/change-value-create-employee',
+                type: 'POST',
+                data: {
+                    type: type,
+                    positionId: positionId,
+                    departmentId: departmentId
+                },
+                success: function (data) {
+                    if (type == 1) {
+                        document.getElementById("departmentId").innerHTML = data.substring(0, data.indexOf('/////'));
+                        document.getElementById("managerId").innerHTML = data.substring(data.indexOf('/////') + 5, data.length);
+                    } else if (type == 2) {
+                        document.getElementById("managerId").innerHTML = data;
+                    }
+                }
+            });
+        }
+    </script>
     <%@include file="./includes/Footer.jsp" %>

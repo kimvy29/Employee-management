@@ -37,6 +37,26 @@ public class DepartmentDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
+    
+    public static ArrayList<Department> getAllDepartmentNoManager() {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "SELECT id, name, roomNo, managerId\n"
+                    + "FROM Department WHERE managerId is null";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<Department> list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(new Department(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4)));
+
+            }
+            conn.close();
+            return list;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            System.out.println("Error at model.dao.DepartmentDB.getAllDepartment()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
 
     public static Department getDepartment(int id) {
         try (Connection conn = DBContext.getConnection()) {
@@ -118,6 +138,9 @@ public class DepartmentDB implements DBContext {
     
     public static void main(String[] args) {
 //        new Department("Phòng nhân sự", 102).create();
-System.out.println(new Department(1));
+//for(Department d : DepartmentDB.getAllDepartmentNoManager()) {
+//    System.out.println(d);
+//}
+System.out.println(new Department(1).getManagerName());
     }
 }
