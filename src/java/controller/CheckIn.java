@@ -148,9 +148,11 @@ public class CheckIn extends HttpServlet {
             out.println("<td>" + t.getCurrentDate() + "</td>");
             out.println("<td>" + t.getStartTime() + "</td>");
             out.println("<td>" + (t.getEndTime() != null ? t.getEndTime() : "") + "</td>");
+            out.println("<td>" + t.getWorkingHours() + "</td>");
             out.println("<td>" + t.getPunish() + "</td>");
             out.println("<td>" + (t.getStartOverTime() != null ? t.getStartOverTime() : "") + "</td>");
             out.println("<td>" + (t.getEndOverTime() != null ? t.getEndOverTime() : "") + "</td>");
+            out.println("<td>" + t.getOverTimeHours() + "</td>");
             out.println("</tr>");
         }
     }

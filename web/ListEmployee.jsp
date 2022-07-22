@@ -101,7 +101,7 @@
                     type: 2
                 },
                 success: function () {
-                    alert("Đặt lại mật khẩu mặt định 'Abc123*' cho nhân viên "+fullName+" thành công!")
+                    alert("Đặt lại mật khẩu cho nhân viên "+fullName+" thành công!")
                 }
             });
         }

@@ -8,6 +8,13 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +48,7 @@ public class CreateEmployee extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateEmployee</title>");            
+            out.println("<title>Servlet CreateEmployee</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet CreateEmployee at " + request.getContextPath() + "</h1>");
@@ -67,7 +74,7 @@ public class CreateEmployee extends HttpServlet {
             Account a = (Account) request.getSession().getAttribute("acc");
             if (a != null) {
                 int type = a.getRoleId();
-                if(type == 1) {
+                if (type == 1) {
                     request.setAttribute("department", DepartmentDB.getAllDepartmentNoManager());
                     request.setAttribute("manager", EmployeeDB.getAllManager());
                     request.getRequestDispatcher("CreateEmployee.jsp").include(request, response);
@@ -106,7 +113,9 @@ public class CreateEmployee extends HttpServlet {
         long basicSalary = Long.parseLong(request.getParameter("basicSalary"));
         String tDate = request.getParameter("tDate");
         String note = request.getParameter("note");
-        new Employee(fullName, email, address, tel, positionId, managerId, departmentId, sex).create(new Contract(Date.valueOf(tDate), basicSalary, note));
+        Employee e = new Employee(fullName, email, address, tel, positionId, managerId, departmentId, sex).create(new Contract(Date.valueOf(tDate), basicSalary, note));
+
+        
         response.sendRedirect("list-employee");
     }
 

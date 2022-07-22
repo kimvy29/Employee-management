@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import model.DBConnect.DBContext;
 import model.entity.Account;
+import model.entity.Employee;
 
 /**
  *
@@ -75,14 +76,17 @@ public class AccountDB implements DBContext {
 
     public static void create(Account a) {
         try (Connection conn = DBContext.getConnection()) {
-            String query = "INSERT INTO Account(userName, empId, roleId)\n"
-                    + "VALUES(?,?,?)";
+            String query = "INSERT INTO Account(userName, password, empId, roleId)\n"
+                    + "VALUES(?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, a.getUserName());
-            ps.setInt(2, a.getEmpId());
-            ps.setInt(3, a.getRoleId());
+            String pass = Account.getPassRamdom();
+            ps.setString(2, Account.pass(pass));
+            ps.setInt(3, a.getEmpId());
+            ps.setInt(4, a.getRoleId());
             ps.executeUpdate();
             conn.close();
+            SendMail.sendMailAccount(new Employee(a.getEmpId()), 1, pass);
         } catch (Exception e) {
             System.out.println(e);
             System.out.println("Error at AccountDB.create()");
@@ -96,8 +100,10 @@ public class AccountDB implements DBContext {
                     + "SET password = ?\n"
                     + "WHERE empId = ?";
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, "EC98138A6CC21276570E1016F91FB1812801168149D19C7CE314551F835C9C1D");
+            String pass =Account.getPassRamdom();
+            ps.setString(1, pass);
             ps.setInt(2, a.getEmpId());
+            SendMail.sendMailAccount(new Employee(a.getEmpId()), 0, pass);
             ps.executeUpdate();
             conn.close();
         } catch (Exception e) {
@@ -108,6 +114,6 @@ public class AccountDB implements DBContext {
     }
     
     public static void main(String[] args) {
-        new Account(1006).changePass("123", "Abc123*");
+        
     }
 }

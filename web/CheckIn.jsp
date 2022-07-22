@@ -19,10 +19,10 @@
             </div>
             <div class="col-md-12">
                 <div class="page_title">
-                    <button class="btn btn-success" onclick="timeKeeping(1)" id="checkIn" ${checkIn}>Check-in</button>
-                    <button class="btn btn-danger" onclick="timeKeeping(2)" id="checkOut" ${checkOut}>Check-out</button>
-                    <button class="btn btn-success" onclick="timeKeeping(3)" id="checkInOverTime" ${checkInOverTime}>Check-in-overtime</button>
-                    <button class="btn btn-danger" onclick="timeKeeping(4)" id="checkOutOverTime" ${checkOutOverTime}>Check-out-overtime</button>
+                    <button class="btn btn-success" onclick="timeKeeping(1,this)" id="checkIn" ${checkIn}>Check-in</button>
+                    <button class="btn btn-danger" onclick="timeKeeping(2,this)" id="checkOut" ${checkOut}>Check-out</button>
+                    <button class="btn btn-success" onclick="timeKeeping(3,this)" id="checkInOverTime" ${checkInOverTime}>Check-in-overtime</button>
+                    <button class="btn btn-danger" onclick="timeKeeping(4,this)" id="checkOutOverTime" ${checkOutOverTime}>Check-out-overtime</button>
                 </div>
             </div>
         </div>
@@ -34,9 +34,11 @@
                             <th scope="col">Ngày</th>
                             <th scope="col">Start time</th>
                             <th scope="col">End time</th>
+                            <th scope="col">Số giờ làm việc</th>
                             <th scope="col">Số lần vi phạm</th>
                             <th scope="col">Start over time</th>
                             <th scope="col">End over time</th>
+                            <th scope="col">Số giờ tăng ca</th>
                         </tr>
                     </thead>
                     <tbody id="data">
@@ -45,9 +47,11 @@
                                 <td>${l.currentDate}</td>
                                 <td>${l.startTime}</td>
                                 <td>${l.endTime}</td>
+                                <td>${l.workingHours}</td>
                                 <td>${l.punish}</td>
                                 <td>${l.startOverTime}</td>
                                 <td>${l.endOverTime}</td>
+                                <td>${l.overTimeHours}</td>
                             </tr>
                         </c:forEach>               
                     </tbody>
@@ -57,7 +61,8 @@
     </div>
     
     <script>
-        function timeKeeping(type){
+        function timeKeeping(type,button){
+            button.disabled = "true";
             $.ajax({
                 url: '/employee-management/check-in',
                 type: 'POST',

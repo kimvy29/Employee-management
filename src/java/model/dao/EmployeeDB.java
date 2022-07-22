@@ -5,17 +5,10 @@
  */
 package model.dao;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.DBConnect.DBContext;
 import model.entity.Account;
 import model.entity.Contract;
@@ -95,7 +88,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
-    
+
     public static ArrayList<Employee> getAllLeaderRoom(int departmentId) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -161,7 +154,7 @@ public class EmployeeDB implements DBContext {
         throw new RuntimeException("Nhân viên không tồn tại!");
     }
 
-    public static void create(Employee e, Contract c) {
+    public static Employee create(Employee e, Contract c) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "INSERT INTO Employee(fullName, email, address, tel, positionId, managerId, departmentId, sex)\n"
                     + "OUTPUT inserted.id\n"
@@ -180,8 +173,9 @@ public class EmployeeDB implements DBContext {
             ps.setInt(7, e.getDepartmentId());
             ps.setBoolean(8, e.isSex());
             ResultSet rs = ps.executeQuery();
+            int empId = -1;
             if (rs.next()) {
-                int empId = rs.getInt(1);
+                empId = rs.getInt(1);
                 Account a = new Account();
                 a.setEmpId(empId);
                 if (e.getPositionId() == 4) {
@@ -201,6 +195,7 @@ public class EmployeeDB implements DBContext {
             }
             conn.commit();
             conn.close();
+            return new Employee(empId);
         } catch (Exception ex) {
             System.out.println(ex);
             System.out.println("Error as model.dao.EmployeeDB.create()");
@@ -291,7 +286,7 @@ public class EmployeeDB implements DBContext {
 //        System.out.println(EmployeeDB.getAllEmployee().get(0));
 //        System.out.println(EmployeeDB.getAllEmployee().indexOf(EmployeeDB.getAllEmployee().get(0)));
 //new Employee(1002).startTime();
-InetAddress myIP = InetAddress.getLoopbackAddress();
-System.out.println(myIP.getHostAddress());
+//        InetAddress myIP = InetAddress.getLoopbackAddress();
+//        System.out.println(myIP.getHostAddress());
     }
 }

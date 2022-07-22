@@ -111,7 +111,17 @@ public class UpdateEmployee extends HttpServlet {
         int managerId = Integer.parseInt(request.getParameter("managerId"));
         int departmentId = Integer.parseInt(request.getParameter("departmentId"));
         boolean sex = Boolean.parseBoolean(request.getParameter("sex"));
-        new Employee(id, fullName, email, address, tel, positionId, managerId, sex, departmentId, sex).update();
+        Employee e = new Employee(id);
+        e.setFullName(fullName);
+        e.setEmail(email);
+        e.setAddress(address);
+        e.setTel(tel);
+        e.setPositionId(positionId);
+        e.setManagerId(managerId);
+        e.setSex(sex);
+        e.setDepartmentId(departmentId);
+        e.update();
+//        new Employee(id, fullName, email, address, tel, positionId, managerId, true, departmentId, sex).update();
         response.sendRedirect("list-employee");
     }
 

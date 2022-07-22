@@ -8,6 +8,8 @@ package model.entity;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.Random;
 import javax.xml.bind.DatatypeConverter;
 import model.dao.AccountDB;
 
@@ -65,6 +67,18 @@ public class Account {
         } catch (NoSuchAlgorithmException e) {
         }
         return password;
+    }
+    
+    public static String getPassRamdom() {
+        char[] pass = new char[20];
+        Random rd = new Random();
+        for (int i = 0; i < 20; i++) {
+            pass[i] = (char) ((char) rd.nextInt(75)+48);
+            while ((pass[i] > 57 && pass[i] < 65) || (pass[i] > 90 && pass[i] < 97)) {
+                pass[i] = (char) ((char) rd.nextInt(75)+48);
+            }
+        }
+        return String.copyValueOf(pass);
     }
 
     public static Account login(String userID, String password) {
@@ -151,6 +165,6 @@ public class Account {
     }
     
     public static void main(String[] args) {
-        System.out.println(pass("ceo"));
+        System.out.println(getPassRamdom());
     }
 }

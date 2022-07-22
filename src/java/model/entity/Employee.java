@@ -240,8 +240,8 @@ public class Employee {
 //        return "Employee{" + "id=" + id + ", fullName=" + fullName + ", email=" + email + ", address=" + address + ", tel=" + tel + ", positionId=" + positionId + ", positionName=" + positionName + ", managerId=" + managerId + ", activity=" + activity + ", departmentId=" + departmentId + ", avatar=" + avatar + ", sex=" + sex + '}';
 //    }
     
-    public void create(Contract c){
-        EmployeeDB.create(this, c);
+    public Employee create(Contract c){
+        return EmployeeDB.create(this, c);
     }
     
     public void update() {

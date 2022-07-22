@@ -18,24 +18,24 @@
         </div>
         <div class="row column1">
             <div class="col-lg-12">
-                <form action="create-employee" method="POST" style="display: flex">
+                <form action="create-employee" method="POST" style="display: flex" onsubmit="disable()">
                     <div class="col-6">
                         <h4>Thông tin nhân viên</h4>
                         <div class="form-group">
                             <label for="fullName" class="text-info">Tên nhân viên:</label><br>
-                            <input type="text" name="fullName" id="fullName" class="form-control" autocomplete="off" required>
+                            <input type="text" name="fullName" id="fullName" class="form-control value" autocomplete="off" required>
                         </div>
                         <div class="form-group">
                             <label for="email" class="text-info">Email:</label><br>
-                            <input type="email" name="email" id="email" class="form-control" autocomplete="off" required>
+                            <input type="email" name="email" id="email" class="form-control value" autocomplete="off" required>
                         </div>
                         <div class="form-group">
                             <label for="address" class="text-info">Địa chỉ:</label><br>
-                            <input type="text" name="address" id="address" class="form-control" autocomplete="off" required>
+                            <input type="text" name="address" id="address" class="form-control value" autocomplete="off" required>
                         </div>
                         <div class="form-group">
                             <label for="tel" class="text-info">Số điện thoại:</label><br>
-                            <input type="text" name="tel" id="tel" class="form-control" autocomplete="off" required maxlength="10" pattern="[0-9]{1,10}" title="Số điện thoại chỉ chứa các ký tự số từ 0-9">
+                            <input type="text" name="tel" id="tel" class="form-control value" autocomplete="off" required maxlength="10" pattern="[0-9]{1,10}" title="Số điện thoại chỉ chứa các ký tự số từ 0-9">
                         </div>
                         <div class="form-group">
                             <label for="positionId" class="text-info">Chức vụ:</label><br>
@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group">
                             <label for="departmentId" class="text-info">Phòng ban:</label><br>
-                            <select class="form-control" name="departmentId" id="departmentId" onchange="change(2)">
+                            <select class="form-control value" name="departmentId" id="departmentId" onchange="change(2)">
                                 <c:forEach items="${department}" var="d">
                                     <option value="${d.id}">${d.name}</option>
                                 </c:forEach>      
@@ -71,11 +71,11 @@
                         <h4>Thông tin hợp đồng</h4>
                         <div class="form-group">
                             <label for="basicSalary" class="text-info">Lương cơ bản:</label><br>
-                            <input type="number" name="basicSalary" id="basicSalary" class="form-control" autocomplete="off" required>
+                            <input type="number" name="basicSalary" id="basicSalary" class="form-control value" autocomplete="off" required>
                         </div>
                         <div class="form-group">
                             <label for="tDate" class="text-info">Hạn hợp đồng:</label><br>
-                            <input type="date" name="tDate" required>
+                            <input type="date" name="tDate" class="value" required>
                         </div>
                         <div class="form-group">
                             <label for="note" class="text-info">Ghi chú:</label><br>
@@ -83,13 +83,11 @@
                         </div>
                         <div class="form-group">
                             <br>
-                            <input type="submit" name="submit" class="btn btn-info btn-md" value="Đồng ý">
+                            <input type="submit" id="submit" name="submit" class="btn btn-info btn-md" value="Đồng ý">
                         </div>
                     </div>
                 </form>
             </div>
-
-
         </div>
 
         <!-- graph -->
@@ -100,6 +98,16 @@
     </div>
     <!-- footer -->
     <script>
+        function disable() {
+            var values = document.getElementsByClassName("value");
+            for (i = 0; i < values.length; i++) {
+                if (!values[i].value) {
+                    break;
+                }
+                document.getElementById("submit").disabled = "true";
+            }
+        }
+
         let positionId = 0;
         let departmentId = 0;
         function getPositionId() {
@@ -108,15 +116,11 @@
 
         function getDepartmentId() {
             departmentId = document.getElementById("departmentId").value;
-
-            
         }
 
         function change(type) {
             getPositionId();
             getDepartmentId();
-            console.log(positionId);
-            console.log(departmentId);
             $.ajax({
                 url: '/employee-management/change-value-create-employee',
                 type: 'POST',
