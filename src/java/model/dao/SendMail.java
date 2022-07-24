@@ -26,6 +26,7 @@ public class SendMail {
     public static void sendMailAccount(Employee e, int type, String pass) {
         try {
             Properties mailSer = System.getProperties();
+            mailSer.put("mail.smtp.ssl.trust", "smtp.gmail.com");
             mailSer.put("mail.smtp.host", "smtp.gmail.com");
             mailSer.put("mail.smtp.port", "587");
             mailSer.put("mail.smtp.auth", "true");
