@@ -98,16 +98,6 @@
     </div>
     <!-- footer -->
     <script>
-        function disable() {
-            var values = document.getElementsByClassName("value");
-            for (i = 0; i < values.length; i++) {
-                if (!values[i].value) {
-                    break;
-                }
-                document.getElementById("submit").disabled = "true";
-            }
-        }
-
         let positionId = 0;
         let departmentId = 0;
         function getPositionId() {

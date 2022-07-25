@@ -6,16 +6,21 @@
 <%@page contentType="text/html" errorPage="error.jsp" pageEncoding="UTF-8"%>
 
 <div class="container-fluid">
-        <div class="footer">
-            <p>Quản lý nhân viên FPT<br><br>
-            </p>
-        </div>
+    <div class="footer">
+        <p>Quản lý nhân viên FPT<br><br>
+        </p>
     </div>
 </div>
-            </div>
-         </div>
-         <!-- model popup -->
-      </div>
+</div>
+</div>
+</div>
+<!-- model popup -->
+</div>
+<script>
+    function disable() {
+        document.getElementById("submit").disabled = "true";
+    }
+</script>
 <script src="./assets/js/jquery.min.js"></script>
 <script src="./assets/js/popper.min.js"></script>
 <script src="./assets/js/bootstrap.min.js"></script>

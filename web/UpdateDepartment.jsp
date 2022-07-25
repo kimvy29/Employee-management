@@ -20,7 +20,7 @@
         </div>
         <div class="row column1">
             <div class="col-lg-12">
-                <form action="update-department" method="POST">
+                <form action="update-department" method="POST" onsubmit="disable()">
 
                     <table class="table" style="font-size: 15px; color: black; font-family: auto" cellspacing="3" cellpadding="3">
                         <tr>
@@ -42,11 +42,11 @@
                                 </select>
                             </td>
                         </tr>
-                        </table>
-                        <input type="number" name="id" value="${department.id}" hidden>
+                    </table>
+                    <input type="number" name="id" value="${department.id}" hidden>
                     <div style="display: flex">
                         <div class="center" style="margin: 0 10px"><a class="main_bt" onclick="javascript:history.go(-1);">Quay lại</a></div>
-                        <div class="center"><button type="submit" class="main_bt" style="background: #0069d9; color: black">Sửa</button></div>
+                        <div class="center"><button type="submit" class="main_bt" id='submit' style="background: #0069d9; color: black">Sửa</button></div>
                     </div>
 
                 </form>

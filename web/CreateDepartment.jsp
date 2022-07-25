@@ -18,7 +18,7 @@
         </div>
         <div class="row column1">
             <div class="col-6">
-                <form action="create-department" method="POST">
+                <form action="create-department" method="POST" onsubmit="disable()">
                     <h4>Thông tin phòng</h4>
                     <div class="form-group">
                         <label for="name" class="text-info">Tên phòng:</label><br>
@@ -28,7 +28,7 @@
                         <label for="roomNo" class="text-info">Số phòng:</label><br>
                         <input type="number" name="roomNo" id="roomNo" class="form-control" autocomplete="off" required>
                     </div>
-                    <input type="submit" name="submit" class="btn btn-info btn-md" value="Đồng ý">
+                    <input type="submit" name="submit" id="submit" class="btn btn-info btn-md" value="Đồng ý">
                 </form>
             </div>
 

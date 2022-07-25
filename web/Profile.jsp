@@ -18,9 +18,9 @@
                 </div>
                 <div style="display: flex; align-items: flex-end">
                     <img src="${employee.avatar}" style="max-height: 300px; margin: 2%" alt="${employee.fullName}">
-                    <form action="profile" method="POST" enctype="multipart/form-data" style="margin: 2%">
+                    <form action="profile" method="POST" enctype="multipart/form-data" style="margin: 2%" onsubmit="disable()">
                         <input type="file" name="avatar" required style="margin: 2%"><br>
-                        <input class="btn btn-compose" style="width: unset; margin: 2%" type="submit" value="Đổi avatar">
+                        <input class="btn btn-compose" style="width: unset; margin: 2%" type="submit" id="submit" value="Đổi avatar">
                     </form>
                 </div>
             </div>
