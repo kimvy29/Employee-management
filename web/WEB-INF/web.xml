@@ -56,6 +56,14 @@
         <servlet-name>ChangeValueCreateEmployee</servlet-name>
         <servlet-class>controller.ChangeValueCreateEmployee</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PayOffDetail</servlet-name>
+        <servlet-class>controller.PayOffDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreatePayOff</servlet-name>
+        <servlet-class>controller.CreatePayOff</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -111,6 +119,14 @@
     <servlet-mapping>
         <servlet-name>ChangeValueCreateEmployee</servlet-name>
         <url-pattern>/change-value-create-employee</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PayOffDetail</servlet-name>
+        <url-pattern>/payoff-detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreatePayOff</servlet-name>
+        <url-pattern>/create-payoff</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

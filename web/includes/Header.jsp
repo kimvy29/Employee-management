@@ -119,6 +119,11 @@
                                         <li>
                                             <a href="list-employee"><i class="fa fa-users green_color"></i> <span>Danh sách nhân viên</span></a>
                                         </li>
+                                        <c:if test="${acc.roleId == 2}">
+                                            <li>
+                                                <a href="create-payoff"><i class="fa fa-plus-square-o green_color"></i> <span>Tạo thưởng/phạt</span></a>
+                                            </li>
+                                        </c:if>
                                     </ul>
                                 </li>
                             </c:if>

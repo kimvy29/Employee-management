@@ -30,6 +30,7 @@
                             <th scope="col">Giới tính</th>
                             <th scope="col">Phòng ban</th>
                             <th scope="col">Chức vụ</th>
+                            <th scope="col">Thưởng phạt</th>
                                 <c:if test="${acc.roleId == 1}">
                                 <th scope="col">Khóa tài khoản</th>
                                 <th scope="col">Update</th>
@@ -47,6 +48,7 @@
                                 <td>${l.gen}</td>
                                 <td>${l.departmentName}</td>
                                 <td>${l.positionName}</td>
+                                <td><a href="payoff-detail?id=${l.id}">Xem</a></td>
                                 <c:if test="${acc.roleId == 1}">
                                     <td><a id="block${l.id}" onclick="block(${l.id}, '${l.fullName}')" style="cursor: pointer">${l.block}</a></td>
                                     <td><a style="color: blue" href="update-employee?id=${l.id}">Update</a></td>

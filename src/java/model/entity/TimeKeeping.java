@@ -10,6 +10,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.dao.TimeKeepingDB;
@@ -75,8 +76,8 @@ public class TimeKeeping {
         this(TimeKeepingDB.getTimeKeeping(id));
     }
     
-    public TimeKeeping(Employee e) {
-        this.employeeId = e.getId();
+    public ArrayList<TimeKeeping> listTimeKeeping(Employee e) {
+        return TimeKeepingDB.getTimeKeepingByEmployee(e);
     }
 
     public int getId() {
