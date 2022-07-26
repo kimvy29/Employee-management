@@ -75,7 +75,7 @@
                         </div>
                         <div class="form-group">
                             <label for="tDate" class="text-info">Hạn hợp đồng:</label><br>
-                            <input type="date" name="tDate" class="value" required>
+                            <input type="date" name="tDate" min="${current}" class="value" required>
                         </div>
                         <div class="form-group">
                             <label for="note" class="text-info">Ghi chú:</label><br>

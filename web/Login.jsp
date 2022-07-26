@@ -53,19 +53,19 @@
                             </div>
                         </div>
                         <div class="login_form">
-                            <form action="login" method="post" onsubmit="disable()">
+                            <form action="login" method="post">
                                 <fieldset>
                                     <div class="field">
                                         <label class="label_field">Tên đăng nhập</label>
-                                        <input type="text" name="userName" placeholder="Tên đăng nhập..." />
+                                        <input type="text" name="userName" required="" placeholder="Tên đăng nhập..." />
                                     </div>
                                     <div class="field">
                                         <label class="label_field">Mật khẩu</label>
-                                        <input type="password" name="password" placeholder="Mật khẩu..." />
+                                        <input type="password" name="password" required="" placeholder="Mật khẩu..." />
                                     </div>
                                     <div class="field margin_0">
                                         <label class="label_field hidden">hidden label</label>
-                                        <button class="main_bt" id='submit'>Đăng nhập</button>
+                                        <button class="main_bt">Đăng nhập</button>
                                     </div>
                                 </fieldset>
                             </form>
@@ -89,10 +89,5 @@
         </script>
         <!-- custom js -->
         <script src="js/custom.js"></script>
-        <script>
-                                function disable() {
-                                    document.getElementById("submit").disabled = "true";
-                                }
-        </script>
     </body>
 </html>

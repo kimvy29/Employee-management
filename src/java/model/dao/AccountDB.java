@@ -101,7 +101,7 @@ public class AccountDB implements DBContext {
                     + "WHERE empId = ?";
             PreparedStatement ps = conn.prepareStatement(query);
             String pass =Account.getPassRamdom();
-            ps.setString(1, pass);
+            ps.setString(1, Account.pass(pass));
             ps.setInt(2, a.getEmpId());
             SendMail.sendMailAccount(new Employee(a.getEmpId()), 0, pass);
             ps.executeUpdate();

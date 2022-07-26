@@ -75,6 +75,7 @@ public class CreateEmployee extends HttpServlet {
             if (a != null) {
                 int type = a.getRoleId();
                 if (type == 1) {
+                    request.setAttribute("current", java.time.LocalDate.now().plusDays(1));
                     request.setAttribute("department", DepartmentDB.getAllDepartmentNoManager());
                     request.setAttribute("manager", EmployeeDB.getAllManager());
                     request.getRequestDispatcher("CreateEmployee.jsp").include(request, response);
