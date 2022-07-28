@@ -83,6 +83,9 @@
                         document.getElementById("checkOutOverTime").disabled = "true";
                     }
                     document.getElementById("data").innerHTML = data;
+                },
+                error: function () {
+                    alert("Có lỗi xảy ra, vui lòng thử lại!");
                 }
             });
         }

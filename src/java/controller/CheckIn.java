@@ -131,16 +131,34 @@ public class CheckIn extends HttpServlet {
         int type = Integer.parseInt(request.getParameter("type"));
         switch (type) {
             case 1:
-                new Employee(id).startTime();
+                if(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)) == null){
+                    new Employee(id).startTime();
+                } else {
+                    throw new RuntimeException("Có lỗi xảy ra, vui lòng thử lại!");
+                }
+                
                 break;
             case 2:
-                new TimeKeeping(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getId()).endTime();
+                if(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getEndTime() == null) {
+                    new TimeKeeping(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getId()).endTime();
+                } else {
+                    throw new RuntimeException("Có lỗi xảy ra, vui lòng thử lại!");
+                }
                 break;
             case 3:
-                new TimeKeeping(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getId()).startOverTime();
+                if(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getStartOverTime() == null) {
+                    new TimeKeeping(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getId()).startOverTime();    
+                } else {
+                    throw new RuntimeException("Có lỗi xảy ra, vui lòng thử lại!");
+                }
+                
                 break;
             case 4:
-                new TimeKeeping(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getId()).endOverTime();
+                if(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getEndOverTime() == null) {
+                    new TimeKeeping(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(id)).getId()).endOverTime(); 
+                } else {
+                    throw new RuntimeException("Có lỗi xảy ra, vui lòng thử lại!");
+                }
                 break;
         }
         for (TimeKeeping t : TimeKeepingDB.getTimeKeepingByEmployee(new Employee(a.getEmpId()))) {
