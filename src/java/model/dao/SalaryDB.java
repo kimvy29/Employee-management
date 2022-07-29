@@ -25,7 +25,7 @@ public class SalaryDB implements DBContext {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4),rs.getLong(5), rs.getLong(6), rs.getInt(7), rs.getLong(8), rs.getLong(9));
+                return new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4),rs.getFloat(5), rs.getFloat(6), rs.getInt(7), rs.getLong(8), rs.getLong(9));
             }
             conn.close();
         } catch (Exception ex) {
@@ -43,7 +43,7 @@ public class SalaryDB implements DBContext {
             ResultSet rs = ps.executeQuery();
             ArrayList<Salary> list = new ArrayList<>();
             while (rs.next()) {
-                list.add(new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4),rs.getLong(5), rs.getLong(6), rs.getInt(7), rs.getLong(8), rs.getLong(9)));
+                list.add(new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4),rs.getFloat(5), rs.getFloat(6), rs.getInt(7), rs.getLong(8), rs.getLong(9)));
             }
             conn.close();
             return list;
@@ -64,7 +64,7 @@ public class SalaryDB implements DBContext {
             ResultSet rs = ps.executeQuery();
             ArrayList<Salary> list = new ArrayList<>();
             while (rs.next()) {
-                list.add(new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4),rs.getLong(5), rs.getLong(6), rs.getInt(7), rs.getLong(8), rs.getLong(9)));
+                list.add(new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4),rs.getFloat(5), rs.getFloat(6), rs.getInt(7), rs.getLong(8), rs.getLong(9)));
             }
             conn.close();
             return list;
@@ -82,7 +82,7 @@ public class SalaryDB implements DBContext {
             ResultSet rs = ps.executeQuery();
             ArrayList<Salary> list = new ArrayList<>();
             while (rs.next()) {
-                list.add(new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4),rs.getLong(5), rs.getLong(6), rs.getInt(7), rs.getLong(8), rs.getLong(9)));
+                list.add(new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4),rs.getFloat(5), rs.getFloat(6), rs.getInt(7), rs.getLong(8), rs.getLong(9)));
             }
             conn.close();
             return list;
@@ -100,8 +100,9 @@ public class SalaryDB implements DBContext {
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, s.getEmpId());
             ps.setLong(2, s.getSalary());
-            ps.setLong(3, s.getSumWorking());
-            ps.setLong(4, s.getSumOver());
+            ps.setFloat(3, s.getSumWorking());
+            ps.setFloat(4, s.getSumOver());
+            System.out.println(s.getSumWorking());
             ps.setInt(5, s.getSumPunish());
             ps.setLong(6, s.getSumBonus());
             ps.setLong(7, s.getSumPunishMoney());

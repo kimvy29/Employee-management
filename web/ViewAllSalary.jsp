@@ -44,10 +44,10 @@
                                 <td>${l.curentDate}</td>
                                 <td>${l.sumWorking}</td>
                                 <td>${l.sumOver}</td>
-                                <td>${l.sumPunish}</td>
+                                <td style="color: red">${l.sumPunish}</td>
                                 <td>${l.sumBonus}</td>
-                                <td>${l.sumPunishMoney}</td>
-                                <td><b>${l.salary}</b></td>
+                                <td style="color: red">${l.sumPunishMoney}</td>
+                                <td style="font-weight: bold">${l.salary}</td>
                             </tr>
                         </c:forEach>               
                     </tbody>

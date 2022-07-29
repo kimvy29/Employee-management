@@ -18,8 +18,8 @@ public class Salary {
     private int empId;
     private Date curentDate;
     private long salary;
-    private long sumWorking;
-    private long sumOver;
+    private float sumWorking;
+    private float sumOver;
     private int sumPunish;
     private long sumBonus;
     private long sumPunishMoney;
@@ -27,7 +27,7 @@ public class Salary {
     public Salary() {
     }
 
-    public Salary(int empId, long salary, long sumWorking, long sumOver, int sumPunish, long sumBonus, long sumPunishMoney) {
+    public Salary(int empId, long salary, float sumWorking, float sumOver, int sumPunish, long sumBonus, long sumPunishMoney) {
         this.empId = empId;
         this.salary = salary;
         this.sumWorking = sumWorking;
@@ -37,7 +37,7 @@ public class Salary {
         this.sumPunishMoney = sumPunishMoney;
     }
 
-    public Salary(int id, int empId, Date curentDate, long salary, long sumWorking, long sumOver, int sumPunish, long sumBonus, long sumPunishMoney) {
+    public Salary(int id, int empId, Date curentDate, long salary, float sumWorking, float sumOver, int sumPunish, long sumBonus, long sumPunishMoney) {
         this.id = id;
         this.empId = empId;
         this.curentDate = curentDate;
@@ -98,19 +98,19 @@ public class Salary {
         this.salary = salary;
     }
 
-    public long getSumWorking() {
+    public float getSumWorking() {
         return sumWorking;
     }
 
-    public void setSumWorking(long sumWorking) {
+    public void setSumWorking(float sumWorking) {
         this.sumWorking = sumWorking;
     }
 
-    public long getSumOver() {
+    public float getSumOver() {
         return sumOver;
     }
 
-    public void setSumOver(long sumOver) {
+    public void setSumOver(float sumOver) {
         this.sumOver = sumOver;
     }
 
@@ -145,5 +145,11 @@ public class Salary {
     
     public void create() {
         SalaryDB.create(this);
+    }
+    
+    public static void main(String[] args) {
+        for(Salary s : SalaryDB.getAllSalary()) {
+            System.out.println(s.getSumWorking());
+        }
     }
 }

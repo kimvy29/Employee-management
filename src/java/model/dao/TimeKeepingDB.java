@@ -194,7 +194,7 @@ public class TimeKeepingDB implements DBContext {
         }
     }
 
-    public static long[] rateSalary(Employee e) {
+    public static float[] rateSalary(Employee e) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT SUM(workingHours), SUM(punish), SUM(overTimeHours) FROM TimeKeeping\n"
                     + "WHERE employeeId = ? and checkPay=0 and currentDate < (Current_timestamp-1)\n"
@@ -203,7 +203,7 @@ public class TimeKeepingDB implements DBContext {
             ps.setInt(1, e.getId());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                long[] res = {rs.getLong(1), rs.getInt(2), rs.getLong(3)};
+                float[] res = {rs.getFloat(1), rs.getInt(2), rs.getFloat(3)};
                 return res;
             }
             return null;
@@ -232,6 +232,8 @@ public class TimeKeepingDB implements DBContext {
     }
 
     public static void main(String[] args) {
-        System.out.println(TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate(new Employee(1002)));
+        for(float a: rateSalary(new Employee(1002))) {
+            System.out.println(a);
+        }
     }
 }
