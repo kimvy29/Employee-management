@@ -28,7 +28,12 @@
                             <th scope="col">Họ và tên</th>
                             <th scope="col">Account</th>
                             <th scope="col">Ngày chốt</th>
-                            <th scope="col">Lương</th>
+                            <th scope="col">Số giờ làm</th>
+                            <th scope="col">Số giờ tăng ca</th>
+                            <th scope="col">Số lần vi phạm</th>
+                            <th scope="col">Số tiền thưởng</th>
+                            <th scope="col">Số tiền phạt</th>
+                            <th scope="col">Tổng lương</th>
                         </tr>
                     </thead>
                     <tbody id="data">
@@ -37,7 +42,12 @@
                                 <td>${l.fullName}</td>
                                 <td>${l.account}</td>
                                 <td>${l.curentDate}</td>
-                                <td>${l.salary}</td>
+                                <td>${l.sumWorking}</td>
+                                <td>${l.sumOver}</td>
+                                <td>${l.sumPunish}</td>
+                                <td>${l.sumBonus}</td>
+                                <td>${l.sumPunishMoney}</td>
+                                <td><b>${l.salary}</b></td>
                             </tr>
                         </c:forEach>               
                     </tbody>

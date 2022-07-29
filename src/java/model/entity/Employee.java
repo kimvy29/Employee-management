@@ -258,7 +258,9 @@ public class Employee {
     }
     
     public void paySalary() {
-        new Salary(this.id, (long) (this.getSalaryBasic()*TimeKeepingDB.rateSalary(this)[0] - 20000*TimeKeepingDB.rateSalary(this)[1] + 1.5*this.getSalaryBasic()*TimeKeepingDB.rateSalary(this)[2] + PayOffDB.ratePayOff(this)[0] - PayOffDB.ratePayOff(this)[1])).create();
+        long[] rateSalary = TimeKeepingDB.rateSalary(this);
+        long[] ratePayOff = PayOffDB.ratePayOff(this);
+        new Salary(this.id, (long) (this.getSalaryBasic()*rateSalary[0] - 20000*rateSalary[1] + 1.5*this.getSalaryBasic()*rateSalary[2] + ratePayOff[0] - ratePayOff[1]), rateSalary[0], rateSalary[2], (int) rateSalary[1], ratePayOff[0], ratePayOff[1]).create();
     }
     
     public void block() {

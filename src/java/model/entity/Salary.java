@@ -18,20 +18,35 @@ public class Salary {
     private int empId;
     private Date curentDate;
     private long salary;
+    private long sumWorking;
+    private long sumOver;
+    private int sumPunish;
+    private long sumBonus;
+    private long sumPunishMoney;
 
     public Salary() {
     }
 
-    public Salary(int id, int empId, Date curentDate, long salary) {
+    public Salary(int empId, long salary, long sumWorking, long sumOver, int sumPunish, long sumBonus, long sumPunishMoney) {
+        this.empId = empId;
+        this.salary = salary;
+        this.sumWorking = sumWorking;
+        this.sumOver = sumOver;
+        this.sumPunish = sumPunish;
+        this.sumBonus = sumBonus;
+        this.sumPunishMoney = sumPunishMoney;
+    }
+
+    public Salary(int id, int empId, Date curentDate, long salary, long sumWorking, long sumOver, int sumPunish, long sumBonus, long sumPunishMoney) {
         this.id = id;
         this.empId = empId;
         this.curentDate = curentDate;
         this.salary = salary;
-    }
-    
-    public Salary(int empId, long salary) {
-        this.empId = empId;
-        this.salary = salary;
+        this.sumWorking = sumWorking;
+        this.sumOver = sumOver;
+        this.sumPunish = sumPunish;
+        this.sumBonus = sumBonus;
+        this.sumPunishMoney = sumPunishMoney;
     }
     
     public Salary(int id) {
@@ -39,7 +54,7 @@ public class Salary {
     }
     
     public Salary(Salary s) {
-        this(s.id, s.empId, s.curentDate, s.salary);
+        this(s.id, s.empId, s.curentDate, s.salary, s.sumWorking, s.sumOver, s.sumPunish, s.sumBonus, s.sumPunishMoney);
     }
 
     public int getId() {
@@ -81,6 +96,46 @@ public class Salary {
 
     public void setSalary(long salary) {
         this.salary = salary;
+    }
+
+    public long getSumWorking() {
+        return sumWorking;
+    }
+
+    public void setSumWorking(long sumWorking) {
+        this.sumWorking = sumWorking;
+    }
+
+    public long getSumOver() {
+        return sumOver;
+    }
+
+    public void setSumOver(long sumOver) {
+        this.sumOver = sumOver;
+    }
+
+    public int getSumPunish() {
+        return sumPunish;
+    }
+
+    public void setSumPunish(int sumPunish) {
+        this.sumPunish = sumPunish;
+    }
+
+    public long getSumBonus() {
+        return sumBonus;
+    }
+
+    public void setSumBonus(long sumBonus) {
+        this.sumBonus = sumBonus;
+    }
+
+    public long getSumPunishMoney() {
+        return sumPunishMoney;
+    }
+
+    public void setSumPunishMoney(long sumPunishMoney) {
+        this.sumPunishMoney = sumPunishMoney;
     }
 
     @Override

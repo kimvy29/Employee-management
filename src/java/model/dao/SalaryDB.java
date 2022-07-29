@@ -20,12 +20,12 @@ public class SalaryDB implements DBContext {
 
     public static Salary getSalary(int id) {
         try (Connection conn = DBContext.getConnection()) {
-            String query = "SELECT id, employeeId, currentDate, salary FROM Salary WHERE id = ?";
+            String query = "SELECT id, employeeId, currentDate, salary, sumWorking, sumOver, sumPunish, sumBonus, sumPunishMoney FROM Salary WHERE id = ?";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4));
+                return new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4),rs.getLong(5), rs.getLong(6), rs.getInt(7), rs.getLong(8), rs.getLong(9));
             }
             conn.close();
         } catch (Exception ex) {
@@ -37,13 +37,13 @@ public class SalaryDB implements DBContext {
 
     public static ArrayList<Salary> getSalaryByEmployee(int empId) {
         try (Connection conn = DBContext.getConnection()) {
-            String query = "SELECT id, employeeId, currentDate, salary FROM Salary WHERE employeeId = ?";
+            String query = "SELECT id, employeeId, currentDate, salary, sumWorking, sumOver, sumPunish, sumBonus, sumPunishMoney FROM Salary WHERE employeeId = ?";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, empId);
             ResultSet rs = ps.executeQuery();
             ArrayList<Salary> list = new ArrayList<>();
             while (rs.next()) {
-                list.add(new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4)));
+                list.add(new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4),rs.getLong(5), rs.getLong(6), rs.getInt(7), rs.getLong(8), rs.getLong(9)));
             }
             conn.close();
             return list;
@@ -56,7 +56,7 @@ public class SalaryDB implements DBContext {
     
     public static ArrayList<Salary> getAllSalaryByManagerId(int managerId) {
         try (Connection conn = DBContext.getConnection()) {
-            String query = "SELECT s.id, s.employeeId, s.currentDate, s.salary FROM Salary s INNER JOIN Employee e on s.employeeId = e.id\n"
+            String query = "SELECT s.id, s.employeeId, s.currentDate, s.salary, , s.sumWorking, s.sumOver, s.sumPunish, s.sumBonus, s.sumPunishMoney FROM Salary s INNER JOIN Employee e on s.employeeId = e.id\n"
                     + "WHERE e.managerId = ?\n"
                     + "ORDER BY e.id";
             PreparedStatement ps = conn.prepareStatement(query);
@@ -64,7 +64,7 @@ public class SalaryDB implements DBContext {
             ResultSet rs = ps.executeQuery();
             ArrayList<Salary> list = new ArrayList<>();
             while (rs.next()) {
-                list.add(new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4)));
+                list.add(new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4),rs.getLong(5), rs.getLong(6), rs.getInt(7), rs.getLong(8), rs.getLong(9)));
             }
             conn.close();
             return list;
@@ -77,12 +77,12 @@ public class SalaryDB implements DBContext {
 
     public static ArrayList<Salary> getAllSalary() {
         try (Connection conn = DBContext.getConnection()) {
-            String query = "SELECT id, employeeId, currentDate, salary FROM Salary";
+            String query = "SELECT id, employeeId, currentDate, salary, sumWorking, sumOver, sumPunish, sumBonus, sumPunishMoney FROM Salary";
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             ArrayList<Salary> list = new ArrayList<>();
             while (rs.next()) {
-                list.add(new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4)));
+                list.add(new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4),rs.getLong(5), rs.getLong(6), rs.getInt(7), rs.getLong(8), rs.getLong(9)));
             }
             conn.close();
             return list;
@@ -95,11 +95,16 @@ public class SalaryDB implements DBContext {
 
     public static void create(Salary s) {
         try (Connection conn = DBContext.getConnection()) {
-            String query = "INSERT INTO Salary(employeeId, salary)\n"
-                    + "VALUES(?,?)";
+            String query = "INSERT INTO Salary(employeeId, salary, sumWorking, sumOver, sumPunish, sumBonus, sumPunishMoney)\n"
+                    + "VALUES(?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, s.getEmpId());
             ps.setLong(2, s.getSalary());
+            ps.setLong(3, s.getSumWorking());
+            ps.setLong(4, s.getSumOver());
+            ps.setInt(5, s.getSumPunish());
+            ps.setLong(6, s.getSumBonus());
+            ps.setLong(7, s.getSumPunishMoney());
             TimeKeepingDB.paySalary(s.getEmpId());
             PayOffDB.paySalary(s.getEmpId());
             ps.executeUpdate();
