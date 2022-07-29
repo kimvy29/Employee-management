@@ -56,7 +56,7 @@ public class SalaryDB implements DBContext {
     
     public static ArrayList<Salary> getAllSalaryByManagerId(int managerId) {
         try (Connection conn = DBContext.getConnection()) {
-            String query = "SELECT s.id, s.employeeId, s.currentDate, s.salary, , s.sumWorking, s.sumOver, s.sumPunish, s.sumBonus, s.sumPunishMoney FROM Salary s INNER JOIN Employee e on s.employeeId = e.id\n"
+            String query = "SELECT s.id, s.employeeId, s.currentDate, s.salary, s.sumWorking, s.sumOver, s.sumPunish, s.sumBonus, s.sumPunishMoney FROM Salary s INNER JOIN Employee e on s.employeeId = e.id\n"
                     + "WHERE e.managerId = ?\n"
                     + "ORDER BY e.id";
             PreparedStatement ps = conn.prepareStatement(query);
@@ -70,7 +70,7 @@ public class SalaryDB implements DBContext {
             return list;
         } catch (Exception e) {
             System.out.println(e);
-            System.out.println("Error at model.dao.EmployeeDB.getAllEmployeeByManagerId()");
+            System.out.println("Error at model.dao.SalaryDB.getAllSalaryByManagerId()");
             throw new RuntimeException("Somthing error...");
         }
     }
