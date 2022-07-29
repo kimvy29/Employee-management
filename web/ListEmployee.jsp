@@ -36,6 +36,9 @@
                                 <th scope="col">Update</th>
                                 <th scope="col">Reset password</th>
                                 </c:if>
+                                <c:if test="${acc.roleId == 2}">
+                                <th scope="col">Chốt lương</th>
+                                </c:if>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,7 +55,10 @@
                                 <c:if test="${acc.roleId == 1}">
                                     <td><a id="block${l.id}" onclick="block(${l.id}, '${l.fullName}')" style="cursor: pointer">${l.block}</a></td>
                                     <td><a style="color: blue" href="update-employee?id=${l.id}">Update</a></td>
-                                    <td><a style="color: red; cursor: pointer" onclick="reset(${l.id},'${l.fullName}')">Reset</a></td>
+                                    <td><a style="color: red; cursor: pointer" onclick="reset(${l.id}, '${l.fullName}')">Reset</a></td>
+                                </c:if>
+                                <c:if test="${acc.roleId == 2}">
+                                    <td><button class="btn btn-dark" onclick="closing(${l.id}, '${l.fullName}',this)" <c:if test="${l.checkSalary}">disabled</c:if> >Chốt lương</button></td>
                                     </c:if>
                             </tr>
                         </c:forEach>               
@@ -65,50 +71,69 @@
     <script>
         function block(id, fullName) {
             var status = document.getElementById("block" + id).innerHTML;
-            if(status.trim() == "Khóa") {
-                var conf = confirm("Bạn có chắc chắn muốn khóa tài khoản của nhân viên "+fullName+" không?");
+            if (status.trim() == "Khóa") {
+                var conf = confirm("Bạn có chắc chắn muốn khóa tài khoản của nhân viên " + fullName + " không?");
             } else {
-                var conf = confirm("Bạn có chắc chắn muốn mở tài khoản của nhân viên "+fullName+" không?");
+                var conf = confirm("Bạn có chắc chắn muốn mở tài khoản của nhân viên " + fullName + " không?");
             }
-            if(conf){
+            if (conf) {
                 $.ajax({
-                url: '/employee-management/list-employee',
-                type: 'POST',
-                data: {
-                    id: id,
-                    type: 1
-                },
-                success: function () {
-                    
-                    if (status.trim() == "Khóa") {
-                        document.getElementById("block" + id).innerHTML = "Mở";
-                        alert("Khóa tài khoản của nhân viên "+fullName+" thành công!");
-                    } else {
-                        document.getElementById("block" + id).innerHTML = "Khóa";
-                        alert("Mở tài khoản của nhân viên "+fullName+" thành công!");
+                    url: '/employee-management/list-employee',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        type: 1
+                    },
+                    success: function () {
+
+                        if (status.trim() == "Khóa") {
+                            document.getElementById("block" + id).innerHTML = "Mở";
+                            alert("Khóa tài khoản của nhân viên " + fullName + " thành công!");
+                        } else {
+                            document.getElementById("block" + id).innerHTML = "Khóa";
+                            alert("Mở tài khoản của nhân viên " + fullName + " thành công!");
+                        }
                     }
-                }
-            });
-            } 
-        }
-        
-        function reset(id, fullName) {
-        var conf = confirm("Bạn có chắc chắn muốn đặt lại mật khẩu cho nhân viên "+fullName+" không?");
-        if (conf) {
-            $.ajax({
-                url: '/employee-management/list-employee',
-                type: 'POST',
-                data: {
-                    id: id,
-                    type: 2
-                },
-                success: function () {
-                    alert("Đặt lại mật khẩu cho nhân viên "+fullName+" thành công!")
-                }
-            });
+                });
+            }
         }
 
-    }
+        function reset(id, fullName) {
+            var conf = confirm("Bạn có chắc chắn muốn đặt lại mật khẩu cho nhân viên " + fullName + " không?");
+            if (conf) {
+                $.ajax({
+                    url: '/employee-management/list-employee',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        type: 2
+                    },
+                    success: function () {
+                        alert("Đặt lại mật khẩu cho nhân viên " + fullName + " thành công!")
+                    }
+                });
+            }
+        }
+        
+        function closing(id, fullName, button) {
+            var conf = confirm("Bạn có chắc chắn muốn chốt lương cho nhân viên " + fullName + " không?");
+            if (conf) {
+                button.disabled = "true";
+                $.ajax({
+                    url: '/employee-management/cal-salary',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                    },
+                    success: function () {
+                        alert("Chốt lương cho nhân viên " + fullName + " thành công!")
+                    },
+                    error: function () {
+                        alert("Có lỗi xảy ra, vui lòng thử lại!");
+                    }
+                });
+            }
+        }
     </script>
 
     <%@include file="includes/Footer.jsp" %>

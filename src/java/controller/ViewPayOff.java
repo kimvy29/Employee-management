@@ -12,12 +12,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.entity.Account;
+import model.entity.Employee;
+import model.entity.PayOff;
 
 /**
  *
  * @author ACER
  */
-public class Changepass extends HttpServlet {
+public class ViewPayOff extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +38,10 @@ public class Changepass extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Changepass</title>");
+            out.println("<title>Servlet ViewPayOff</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Changepass at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ViewPayOff at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,15 +60,34 @@ public class Changepass extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+        try {
             Account a = (Account) request.getSession().getAttribute("acc");
             if (a != null) {
-                request.getRequestDispatcher("Changepass.jsp").include(request, response);
+                int type = a.getRoleId();
+                switch (type) {
+                    case 1: {
+                        response.sendRedirect("home");
+                        break;
+                    }
+                    case 2:
+                    case 3: {
+                        if (a.getPositionId() == 1) {
+                            response.sendRedirect("home");
+                            break;
+                        } else {
+                            request.setAttribute("list", PayOff.listPayOff(new Employee(a.getEmpId())));
+                            request.getRequestDispatcher("ViewPayOff.jsp").include(request, response);
+                            break;
+                        }
+                    }
+                    default:
+                        response.sendRedirect("home");
+                        break;
+                }
             } else {
                 response.sendRedirect("login");
             }
-        } catch (IOException e) {
+        } catch (IOException | ServletException e) {
             response.sendRedirect("login");
         }
     }
@@ -82,18 +103,7 @@ public class Changepass extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String oldPass = request.getParameter("oldPass");
-        String newPass = request.getParameter("newPass");
-        String rePass = request.getParameter("rePass");
-        if (!newPass.equals(rePass)) {
-            throw new RuntimeException("Mật khẩu nhập lại không khớp!");
-        } else if (oldPass.equals(newPass)) {
-            throw new RuntimeException("Vui lòng nhập mật khẩu mới khác mật khẩu cũ!");
-        } else {
-            Account a = (Account) request.getSession().getAttribute("acc");
-            a.changePass(oldPass, newPass);
-            response.sendRedirect("profile");
-        }
+        processRequest(request, response);
     }
 
     /**

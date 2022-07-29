@@ -42,6 +42,28 @@ public class TimeKeepingDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
+    
+    public static ArrayList<TimeKeeping> getTimeKeepingByEmployeeUnCheckPay(Employee e) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "SELECT id, employeeId, currentDate, startTime, endTime, punish, workingHours, startOverTime, endOverTime, overTimeHours, checkPay, validVac FROM TimeKeeping WHERE employeeId = ? AND checkPay = 0\n"
+                    + "ORDER by id DESC";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, e.getId());
+            ResultSet rs = ps.executeQuery();
+            ArrayList<TimeKeeping> list = new ArrayList<>();
+//            SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
+            while (rs.next()) {
+                list.add(new TimeKeeping(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getInt(6), rs.getFloat(7), rs.getTime(8), rs.getTime(9), rs.getFloat(10), rs.getBoolean(11), rs.getBoolean(12)));
+
+            }
+            conn.close();
+            return list;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            System.out.println("Error at model.dao.ContractDB.getTimeKeepingByEmployee()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
 
     public static TimeKeeping getTimeKeepingByEmployeeAndCurrentDate(Employee e) {
         try (Connection conn = DBContext.getConnection()) {
@@ -172,16 +194,16 @@ public class TimeKeepingDB implements DBContext {
         }
     }
 
-    public static float[] rateSalary(Employee e) {
+    public static long[] rateSalary(Employee e) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT SUM(workingHours), SUM(punish), SUM(overTimeHours) FROM TimeKeeping\n"
-                    + "WHERE employeeId = ? and checkPay=0 and currentDate < Current_timestamp\n"
+                    + "WHERE employeeId = ? and checkPay=0 and currentDate < (Current_timestamp-1)\n"
                     + "GROUP BY employeeId";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, e.getId());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                float[] res = {rs.getFloat(1), rs.getInt(2), rs.getFloat(3)};
+                long[] res = {rs.getLong(1), rs.getInt(2), rs.getLong(3)};
                 return res;
             }
             return null;
@@ -192,11 +214,11 @@ public class TimeKeepingDB implements DBContext {
         }
     }
 
-    static void paySalary(int empId) {
+    public static void paySalary(int empId) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "UPDATE TimeKeeping\n"
                     + "SET checkPay = 1\n"
-                    + "WHERE employeeId = ? AND currentDate < Current_timestamp";
+                    + "WHERE employeeId = ? AND currentDate < (Current_timestamp-1)";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, empId);
             ps.executeUpdate();

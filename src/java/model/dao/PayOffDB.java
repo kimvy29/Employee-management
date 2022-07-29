@@ -60,6 +60,39 @@ public class PayOffDB implements DBContext {
         }
     }
 
+    public static long[] ratePayOff(Employee e) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "SELECT P1.bonus, p2.punish FROM (SELECT SUM(money) AS bonus, employeeId FROM Payoff WHERE payoff = 1 and checkpay = 0 GROUP BY employeeId) AS P1\n"
+                    + "FULL OUTER JOIN (SELECT SUM(money) AS punish, employeeId FROM Payoff WHERE payoff = 0 and checkpay = 0 GROUP BY employeeId) AS P2 on p1.employeeId = p2.employeeId\n"
+                    + "WHERE P1.employeeId = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, e.getId());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                long bonus = 0;
+                long punish = 0;
+                try {
+                    bonus = rs.getLong(1);
+                } catch (Exception ex) {
+                    bonus = 0;
+                }
+                try {
+                    punish = rs.getLong(2);
+                } catch (Exception ex) {
+                    punish = 0;
+                }
+                long[] res = {bonus, punish};
+                return res;
+            }
+            long[] res = {0,0};
+            return res;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            System.out.println("Error at model.dao.PayOffDB.ratePayOff()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
+
     public static void createPayOff(PayOff p) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "INSERT INTO Payoff(employeeId, payoff, note, money)\n"
@@ -77,6 +110,29 @@ public class PayOffDB implements DBContext {
             System.out.println(ex);
             System.out.println("Error at model.dao.ContractDB.startDate()");
             throw new RuntimeException("Somthing error...");
+        }
+    }
+    
+    public static void paySalary(int empId) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "UPDATE PayOff\n"
+                    + "SET checkPay = 1\n"
+                    + "WHERE employeeId = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, empId);
+            ps.executeUpdate();
+            conn.commit();
+            conn.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            System.out.println("Error at model.dao.TimeKeepingDB.paySalary()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
+    
+    public static void main(String[] args) {
+        for(long i : ratePayOff(new Employee(1002))) {
+            System.out.println(i);
         }
     }
 }

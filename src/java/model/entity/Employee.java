@@ -7,6 +7,7 @@ package model.entity;
 
 import model.dao.Characters;
 import model.dao.EmployeeDB;
+import model.dao.PayOffDB;
 import model.dao.TimeKeepingDB;
 
 /**
@@ -257,11 +258,23 @@ public class Employee {
     }
     
     public void paySalary() {
-        new Salary(this.id, (long) (this.getSalaryBasic()*TimeKeepingDB.rateSalary(this)[0] - 20000*TimeKeepingDB.rateSalary(this)[1] + 1.5*this.getSalaryBasic()*TimeKeepingDB.rateSalary(this)[2])).create();
+        new Salary(this.id, (long) (this.getSalaryBasic()*TimeKeepingDB.rateSalary(this)[0] - 20000*TimeKeepingDB.rateSalary(this)[1] + 1.5*this.getSalaryBasic()*TimeKeepingDB.rateSalary(this)[2] + PayOffDB.ratePayOff(this)[0] - PayOffDB.ratePayOff(this)[1])).create();
     }
     
     public void block() {
         this.setActivity(!this.isActivity());
         EmployeeDB.block(this);
+    }
+    
+    public boolean getCheckSalary() {
+        if(TimeKeepingDB.getTimeKeepingByEmployeeUnCheckPay(this).size() < 2) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public static void main(String[] args) {
+        new Employee(1002).paySalary();
     }
 }

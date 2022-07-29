@@ -61,6 +61,10 @@ public class Salary {
     public String getFullName() {
         return new Employee(empId).getFullName();
     }
+    
+    public String getAccount() {
+        return new Employee(empId).getUserName();
+    }
 
     public String getCurentDate() {
         SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");

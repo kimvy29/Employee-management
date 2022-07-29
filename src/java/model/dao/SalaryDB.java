@@ -53,6 +53,27 @@ public class SalaryDB implements DBContext {
         }
         throw new RuntimeException("Bảng lương không tồn tại!");
     }
+    
+    public static ArrayList<Salary> getAllSalaryByManagerId(int managerId) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "SELECT s.id, s.employeeId, s.currentDate, s.salary FROM Salary s INNER JOIN Employee e on s.employeeId = e.id\n"
+                    + "WHERE e.managerId = ?\n"
+                    + "ORDER BY e.id";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, managerId);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<Salary> list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(new Salary(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getLong(4)));
+            }
+            conn.close();
+            return list;
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Error at model.dao.EmployeeDB.getAllEmployeeByManagerId()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
 
     public static ArrayList<Salary> getAllSalary() {
         try (Connection conn = DBContext.getConnection()) {
@@ -80,6 +101,7 @@ public class SalaryDB implements DBContext {
             ps.setInt(1, s.getEmpId());
             ps.setLong(2, s.getSalary());
             TimeKeepingDB.paySalary(s.getEmpId());
+            PayOffDB.paySalary(s.getEmpId());
             ps.executeUpdate();
             conn.commit();
             conn.close();

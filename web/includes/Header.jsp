@@ -119,6 +119,9 @@
                                         <li>
                                             <a href="list-employee"><i class="fa fa-users green_color"></i> <span>Danh sách nhân viên</span></a>
                                         </li>
+                                        <li>
+                                            <a href="view-allsalary"><i class="fa fa-table green_color"></i> <span>Xem toàn bộ bảng lương</span></a>
+                                        </li>
                                         <c:if test="${acc.roleId == 2}">
                                             <li>
                                                 <a href="create-payoff"><i class="fa fa-plus-square-o green_color"></i> <span>Tạo thưởng/phạt</span></a>
@@ -129,6 +132,8 @@
                             </c:if>
                             <c:if test="${(acc.roleId == 2 or acc.roleId == 3) and acc.positionId != 1}">
                                 <li><a href="check-in"><i class="fa fa-location-arrow yellow_color"></i> <span>Chấm công</span></a></li>
+                                <li><a href="view-salary"><i class="fa fa-table yellow_color"></i> <span>Xem bảng lương</span></a></li>
+                                <li><a href="view-payoff"><i class="fa fa-tasks yellow_color"></i> <span>Xem thưởng/phạt</span></a></li>
                                 </c:if>
 
                             <!--                            <li>
