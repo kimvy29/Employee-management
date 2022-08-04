@@ -26,7 +26,9 @@
                             <th scope="col">Tên nhân viên</th>
                             <th scope="col">Account</th>
                             <th scope="col">Avatar</th>
-                            <th scope="col">Người quản lý</th>
+                                <c:if test="${acc.roleId == 1}">
+                                <th scope="col">Người quản lý</th>
+                                </c:if>
                             <th scope="col">Giới tính</th>
                             <th scope="col">Phòng ban</th>
                             <th scope="col">Chức vụ</th>
@@ -34,7 +36,6 @@
                                 <c:if test="${acc.roleId == 1}">
                                 <th scope="col">Khóa tài khoản</th>
                                 <th scope="col">Update</th>
-                                <th scope="col">Reset password</th>
                                 </c:if>
                                 <c:if test="${acc.roleId == 2}">
                                 <th scope="col">Chốt lương</th>
@@ -47,7 +48,9 @@
                                 <td><a href="contract-detail?id=${l.id}">${l.fullName}</a></td>
                                 <td>${l.userName}</td>
                                 <td><img width="100px" src="${l.avatar}" alt="${l.fullName}"></td>
+                                <c:if test="${acc.roleId == 1}">
                                 <td>${l.managerName}</td>
+                                </c:if>
                                 <td>${l.gen}</td>
                                 <td>${l.departmentName}</td>
                                 <td>${l.positionName}</td>
@@ -55,11 +58,10 @@
                                 <c:if test="${acc.roleId == 1}">
                                     <td><a id="block${l.id}" onclick="block(${l.id}, '${l.fullName}')" style="cursor: pointer">${l.block}</a></td>
                                     <td><a style="color: blue" href="update-employee?id=${l.id}">Update</a></td>
-                                    <td><a style="color: red; cursor: pointer" onclick="reset(${l.id}, '${l.fullName}')">Reset</a></td>
                                 </c:if>
                                 <c:if test="${acc.roleId == 2}">
-                                    <td><button class="btn btn-dark" onclick="closing(${l.id}, '${l.fullName}',this)" <c:if test="${l.checkSalary}">disabled</c:if> >Chốt lương</button></td>
-                                    </c:if>
+                                    <td><button class="btn btn-dark" onclick="closing(${l.id}, '${l.fullName}', this)" <c:if test="${l.checkSalary}">disabled</c:if> >Chốt lương</button></td>
+                                </c:if>
                             </tr>
                         </c:forEach>               
                     </tbody>
@@ -82,7 +84,6 @@
                     type: 'POST',
                     data: {
                         id: id,
-                        type: 1
                     },
                     success: function () {
 
@@ -98,23 +99,6 @@
             }
         }
 
-        function reset(id, fullName) {
-            var conf = confirm("Bạn có chắc chắn muốn đặt lại mật khẩu cho nhân viên " + fullName + " không?");
-            if (conf) {
-                $.ajax({
-                    url: '/employee-management/list-employee',
-                    type: 'POST',
-                    data: {
-                        id: id,
-                        type: 2
-                    },
-                    success: function () {
-                        alert("Đặt lại mật khẩu cho nhân viên " + fullName + " thành công!")
-                    }
-                });
-            }
-        }
-        
         function closing(id, fullName, button) {
             var conf = confirm("Bạn có chắc chắn muốn chốt lương cho nhân viên " + fullName + " không?");
             if (conf) {

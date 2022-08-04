@@ -12,12 +12,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.entity.Account;
+import model.entity.Employee;
 
 /**
  *
  * @author ACER
  */
-public class Login extends HttpServlet {
+public class ForgotPassword extends HttpServlet implements Runnable {
+
+    public ForgotPassword() {
+    }
+    
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +42,10 @@ public class Login extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Login</title>");
+            out.println("<title>Servlet ForgotPassword</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Login at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ForgotPassword at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,19 +69,9 @@ public class Login extends HttpServlet {
             if (a != null) {
                 response.sendRedirect("home");
             }
-            try {
-                int count = (int) request.getSession().getAttribute("count");
-                if (count == 1) {
-                    request.getSession().setAttribute("count", 0);
-                } else {
-                    request.getSession().invalidate();
-                }
-            } catch (Exception e) {
-                request.getSession().invalidate();
-            }
-            request.getRequestDispatcher("Login.jsp").include(request, response);
+            request.getRequestDispatcher("ForgotPass.jsp").include(request, response);
         } catch (IOException | ServletException e) {
-            request.getRequestDispatcher("Login.jsp").include(request, response);
+            request.getRequestDispatcher("ForgotPass.jsp").include(request, response);
         }
     }
 
@@ -90,12 +86,22 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
         String userID = request.getParameter("userName");
-        String password = request.getParameter("password");
-        Account a = Account.login(userID, password);
-        request.getSession().setAttribute("acc", a);
-        request.getSession().removeAttribute("noti");
-        response.sendRedirect("home");
+        String email = request.getParameter("email");
+        Account a = new Account(userID);
+        Employee e = new Employee(a.getEmpId());
+        if (e.getEmail().trim().equals(email.trim())) {
+            ForgotPassword f = new ForgotPassword(a);
+            f.start();
+//            response.sendRedirect("login");
+            request.getSession().setAttribute("count", 1);
+            request.getSession().setAttribute("noti", "Mật khẩu của bạn được reset thành công, vui lòng chờ trong giây lát và kiểm tra email để đăng nhập lại!");
+            response.sendRedirect("login");
+        } else {
+            throw new RuntimeException("Email không đúng!");
+        }
     }
 
     /**
@@ -107,5 +113,30 @@ public class Login extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private Thread t;
+    private Account a;
+
+    ForgotPassword(Account a) {
+        this.a = a;
+    }
+
+    @Override
+    public void run() {
+        try {
+            a.reset();
+            Thread.sleep(50);
+
+        } catch (InterruptedException e) {
+        }
+    }
+
+    public void start() {
+        if (t == null) {
+            t = new Thread(new ForgotPassword(a));
+            t.start();
+        }
+    }
+
 
 }

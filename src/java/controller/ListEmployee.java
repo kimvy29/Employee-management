@@ -107,13 +107,7 @@ public class ListEmployee extends HttpServlet {
         Account a = (Account) request.getSession().getAttribute("acc");
         if (a.getRoleId() == 1) {
             int id = Integer.parseInt(request.getParameter("id"));
-            int type = Integer.parseInt(request.getParameter("type"));
-            if(type == 1) {
-                new Employee(id).block();    
-            } else {
-                new Account(id).reset();
-            }
-            
+            new Employee(id).block();
         } else {
             response.sendRedirect("home");
         }

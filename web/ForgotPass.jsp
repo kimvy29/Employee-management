@@ -53,25 +53,24 @@
                             </div>
                         </div>
                         <div class="login_form">
-                            <div style="color: green">${noti}</div>
-                            <form action="login" method="post">
+                            <form action="forgot-password" method="post">
                                 <fieldset>
                                     <div class="field">
                                         <label class="label_field">Tên đăng nhập</label>
                                         <input type="text" name="userName" required="" placeholder="Tên đăng nhập..." />
                                     </div>
                                     <div class="field">
-                                        <label class="label_field">Mật khẩu</label>
-                                        <input type="password" name="password" required="" placeholder="Mật khẩu..." />
+                                        <label class="label_field">Email</label>
+                                        <input type="email" name="email" required="" placeholder="Email..." />
                                     </div>
                                     <div style="display: flex; text-align: right">
                                         <div class="field margin_0">
                                             <label class="label_field hidden">hidden label</label>
-                                            <button class="main_bt">Đăng nhập</button>
+                                            <button class="main_bt">Đồng ý</button>
                                         </div>
                                         <div class="field margin_0">
                                             <label class="label_field hidden">hidden label</label>
-                                            <a href="forgot-password"><button type="button" class="btn btn-link">Quên mật khẩu?</button></a>
+                                            <a href="login"><button type="button" class="btn btn-link">Quay lại trang đăng nhập?</button></a>
                                         </div>
                                     </div>
                                 </fieldset>
