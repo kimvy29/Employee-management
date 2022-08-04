@@ -71,7 +71,17 @@ public class ListEmployee extends HttpServlet {
                         break;
                     }
                     case 2: {
-                        request.setAttribute("list", EmployeeDB.getAllEmployeeByManagerId(a.getEmpId()));
+                    switch (a.getPositionId()) {
+                        case 1:
+                            request.setAttribute("list", EmployeeDB.getAllEmployee());
+                            break;
+                        case 2:
+                            request.setAttribute("list", EmployeeDB.getAllEmployeeByDepartmentId(new Employee(a.getEmpId()).getDepartmentId()));
+                            break;
+                        default:
+                            request.setAttribute("list", EmployeeDB.getAllEmployeeByManagerId(a.getEmpId()));
+                            break;
+                    }
                         request.getRequestDispatcher("ListEmployee.jsp").include(request, response);
                         break;
                     }

@@ -66,6 +66,29 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
+    
+    public static ArrayList<Employee> getAllEmployeeByDepartmentId(int departmentId) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
+                    + "INNER JOIN Position p ON e.positionId = p.id\n"
+                    + "WHERE e.departmentId = ? and e.positionId <> 1 and e.positionId <> 2\n"
+                    + "ORDER BY e.id";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, departmentId);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<Employee> list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
+
+            }
+            conn.close();
+            return list;
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Error at model.dao.EmployeeDB.getAllEmployeeByDepartmentId()");
+            throw new RuntimeException("Somthing error...");
+        }
+    }
 
     public static ArrayList<Employee> getAllManager() {
         try (Connection conn = DBContext.getConnection()) {

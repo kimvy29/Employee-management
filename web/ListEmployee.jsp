@@ -26,9 +26,7 @@
                             <th scope="col">Tên nhân viên</th>
                             <th scope="col">Account</th>
                             <th scope="col">Avatar</th>
-                                <c:if test="${acc.roleId == 1}">
                                 <th scope="col">Người quản lý</th>
-                                </c:if>
                             <th scope="col">Giới tính</th>
                             <th scope="col">Phòng ban</th>
                             <th scope="col">Chức vụ</th>
@@ -37,7 +35,7 @@
                                 <th scope="col">Khóa tài khoản</th>
                                 <th scope="col">Update</th>
                                 </c:if>
-                                <c:if test="${acc.roleId == 2}">
+                                <c:if test="${acc.positionId == 1 or acc.positionId == 2}">
                                 <th scope="col">Chốt lương</th>
                                 </c:if>
                         </tr>
@@ -48,9 +46,7 @@
                                 <td><a href="contract-detail?id=${l.id}">${l.fullName}</a></td>
                                 <td>${l.userName}</td>
                                 <td><img width="100px" src="${l.avatar}" alt="${l.fullName}"></td>
-                                <c:if test="${acc.roleId == 1}">
                                 <td>${l.managerName}</td>
-                                </c:if>
                                 <td>${l.gen}</td>
                                 <td>${l.departmentName}</td>
                                 <td>${l.positionName}</td>
@@ -59,7 +55,7 @@
                                     <td><a id="block${l.id}" onclick="block(${l.id}, '${l.fullName}')" style="cursor: pointer">${l.block}</a></td>
                                     <td><a style="color: blue" href="update-employee?id=${l.id}">Update</a></td>
                                 </c:if>
-                                <c:if test="${acc.roleId == 2}">
+                                <c:if test="${acc.positionId == 1 or acc.positionId == 2}">
                                     <td><button class="btn btn-dark" onclick="closing(${l.id}, '${l.fullName}', this)" <c:if test="${l.checkSalary}">disabled</c:if> >Chốt lương</button></td>
                                 </c:if>
                             </tr>
