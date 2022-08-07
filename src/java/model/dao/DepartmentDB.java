@@ -77,6 +77,26 @@ public class DepartmentDB implements DBContext {
         }
         throw new RuntimeException("Phòng ban không tồn tại!");
     }
+    
+    public static Department getDepartmentByName(String name) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "SELECT id, name, roomNo, managerId\n"
+                    + "FROM Department\n"
+                    + "WHERE upper(name) = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, name.toUpperCase());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Department(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4));
+            }
+            conn.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            System.out.println("Error at model.dao.DepartmentDB.getDepartmentByName()");
+            throw new RuntimeException("Somthing error...");
+        }
+        throw new RuntimeException("Phòng ban không tồn tại!");
+    }
 
     public static void update(Department d) {
         try (Connection conn = DBContext.getConnection()) {
@@ -141,6 +161,6 @@ public class DepartmentDB implements DBContext {
 //for(Department d : DepartmentDB.getAllDepartmentNoManager()) {
 //    System.out.println(d);
 //}
-System.out.println(new Department(1).getManagerName());
+System.out.println(DepartmentDB.getDepartmentByName("nhân sự"));
     }
 }

@@ -13,8 +13,9 @@
     <div class="container-fluid">
         <div class="row column_title">
             <div class="col-md-12">
-                <div class="page_title">
+                <div id="import" class="page_title" style="display: flex;justify-content: space-between;">
                     <h2>Danh sách nhân viên</h2>
+                    <a href="${link}" download="danhsachnhanvien.xls"><button class="btn btn-success">Kết xuất excel</button></a>
                 </div>
             </div>
         </div>
@@ -26,7 +27,7 @@
                             <th scope="col">Tên nhân viên</th>
                             <th scope="col">Account</th>
                             <th scope="col">Avatar</th>
-                                <th scope="col">Người quản lý</th>
+                            <th scope="col">Người quản lý</th>
                             <th scope="col">Giới tính</th>
                             <th scope="col">Phòng ban</th>
                             <th scope="col">Chức vụ</th>
@@ -52,11 +53,18 @@
                                 <td>${l.positionName}</td>
                                 <td><a href="payoff-detail?id=${l.id}">Xem</a></td>
                                 <c:if test="${acc.roleId == 1}">
-                                    <td><a id="block${l.id}" onclick="block(${l.id}, '${l.fullName}')" style="cursor: pointer">${l.block}</a></td>
+                                    <td><button class="btn btn-danger" id="block${l.id}" onclick="block(${l.id}, '${l.fullName}')">${l.block}</button></td>
                                     <td><a style="color: blue" href="update-employee?id=${l.id}">Update</a></td>
                                 </c:if>
-                                <c:if test="${acc.positionId == 1 or acc.positionId == 2}">
+                                <c:if test="${acc.positionId == 2}">
                                     <td><button class="btn btn-dark" onclick="closing(${l.id}, '${l.fullName}', this)" <c:if test="${l.checkSalary}">disabled</c:if> >Chốt lương</button></td>
+                                </c:if>
+                                <c:if test="${acc.positionId == 1 and l.positionId == 2}">
+                                    <td><button class="btn btn-dark" onclick="closing(${l.id}, '${l.fullName}', this)" <c:if test="${l.checkSalary}">disabled</c:if> >Chốt lương</button></td>
+                                </c:if>
+
+                                <c:if test="${acc.positionId == 1 and l.positionId != 2}">
+                                    <td>-</td>
                                 </c:if>
                             </tr>
                         </c:forEach>               
@@ -115,6 +123,5 @@
             }
         }
     </script>
-
     <%@include file="includes/Footer.jsp" %>
 

@@ -82,7 +82,7 @@ public class TimeKeepingDB implements DBContext {
             conn.close();
         } catch (Exception ex) {
             System.out.println(ex);
-            System.out.println("Error at model.dao.ContractDB.getTimeKeepingByEmployee()");
+            System.out.println("Error at model.dao.TimeKeepingDB.getTimeKeepingByEmployeeAndCurrentDate()");
             throw new RuntimeException("Somthing error...");
         }
         return null;

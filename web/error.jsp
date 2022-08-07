@@ -48,8 +48,8 @@
             <div class="center verticle_center full_height">
                <div class="error_page">
                   <div class="center">
-                     <div class="error_icon">
-                         <img class="img-responsive" style="width: 100%; height: 100%" src="assets/imgs/layout_img/error.png" alt="#">
+                      <div class="error_icon" style="text-align: center; margin-top: 10%;margin-bottom: -15%">
+                         <img class="img-responsive" style="width: 80%; height: 80%" src="assets/imgs/layout_img/error.png" alt="#">
                      </div>
                   </div>
                   <br>

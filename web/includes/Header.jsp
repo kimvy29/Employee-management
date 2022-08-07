@@ -89,9 +89,11 @@
                                         <li>
                                             <a href="profile"><i class="fa fa-user-md green_color"></i> <span>My Profile</span></a>
                                         </li>
-                                        <li>
-                                            <a href="contract-detail?id=${acc.empId}"><i class="fa fa-file green_color"></i> <span>Xem hợp đồng</span></a>
-                                        </li>
+                                        <c:if test="${acc.positionId != 1}">
+                                            <li>
+                                                <a href="contract-detail?id=${acc.empId}"><i class="fa fa-file green_color"></i> <span>Xem hợp đồng</span></a>
+                                            </li>    
+                                        </c:if>
                                     </c:if>
                                     <c:if test="${acc.roleId == 1}">
                                         <li>

@@ -5,7 +5,11 @@
  */
 package model.dao;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -14,13 +18,17 @@ import model.entity.Account;
 import model.entity.Contract;
 import model.entity.Department;
 import model.entity.Employee;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 
 /**
  *
  * @author NguyenVy
  */
 public class EmployeeDB implements DBContext {
-
+    
     public static ArrayList<Employee> getAllEmployee() {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -33,7 +41,7 @@ public class EmployeeDB implements DBContext {
             ArrayList<Employee> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
-
+                
             }
             conn.close();
             return list;
@@ -43,7 +51,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
-
+    
     public static ArrayList<Employee> getAllEmployeeByManagerId(int managerId) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -56,7 +64,7 @@ public class EmployeeDB implements DBContext {
             ArrayList<Employee> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
-
+                
             }
             conn.close();
             return list;
@@ -79,7 +87,7 @@ public class EmployeeDB implements DBContext {
             ArrayList<Employee> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
-
+                
             }
             conn.close();
             return list;
@@ -89,7 +97,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
-
+    
     public static ArrayList<Employee> getAllManager() {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -101,7 +109,7 @@ public class EmployeeDB implements DBContext {
             ArrayList<Employee> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
-
+                
             }
             conn.close();
             return list;
@@ -111,7 +119,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
-
+    
     public static ArrayList<Employee> getAllLeaderRoom(int departmentId) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -124,7 +132,7 @@ public class EmployeeDB implements DBContext {
             ArrayList<Employee> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
-
+                
             }
             conn.close();
             return list;
@@ -134,7 +142,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
-
+    
     public static ArrayList<Employee> getAllManagerLeader() {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -146,7 +154,7 @@ public class EmployeeDB implements DBContext {
             ArrayList<Employee> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
-
+                
             }
             conn.close();
             return list;
@@ -156,7 +164,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
-
+    
     public static Employee getEmployee(int id) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -176,7 +184,27 @@ public class EmployeeDB implements DBContext {
         }
         throw new RuntimeException("Nhân viên không tồn tại!");
     }
-
+    
+    public static Employee getEmployeeByName(String name) {
+        try (Connection conn = DBContext.getConnection()) {
+            String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
+                    + "INNER JOIN Position p ON e.positionId = p.id\n"
+                    + "WHERE upper(e.fullName) = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, name.toUpperCase());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12));
+            }
+            conn.close();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Error at model.dao.EmployeeDB.getEmployeeByName()");
+            throw new RuntimeException("Somthing error...");
+        }
+        throw new RuntimeException("Nhân viên không tồn tại!");
+    }
+    
     public static Employee create(Employee e, Contract c) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "INSERT INTO Employee(fullName, email, address, tel, positionId, managerId, departmentId, sex)\n"
@@ -225,7 +253,70 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Có lỗi xảy ra, vui lòng thử lại!");
         }
     }
-
+    
+    public static String exportEmployee(Employee e) {
+        try {
+            File f = new File("./");
+            String file;
+            String path;
+            String link;
+            ArrayList<Employee> list = new ArrayList<>();
+            if (new Account(e.getId()).getRoleId() == 1 || e.getPositionId() == 1) {
+                file = f.getCanonicalPath() + "/build/web/all/danhsachnhanvien.xls";
+                path = f.getCanonicalPath() + "/build/web/all";
+                link = "./all/danhsachnhanvien.xls";
+                list = EmployeeDB.getAllEmployee();
+            } else if (e.getPositionId() == 2) {
+                file = f.getCanonicalPath() + "/build/web/manager/" + e.getId() + "/danhsachnhanvien.xls";
+                path = f.getCanonicalPath() + "/build/web/manager/" + e.getId();
+                link = "./manager/" + e.getId() + "/danhsachnhanvien.xls";
+                list = EmployeeDB.getAllEmployeeByDepartmentId(e.getDepartmentId());
+            } else if (e.getPositionId() == 3) {
+                file = f.getCanonicalPath() + "/build/web/leader/" + e.getId() + "/danhsachnhanvien.xls";
+                path = f.getCanonicalPath() + "/build/web/leader/" + e.getId();
+                link = "./leader/" + e.getId() + "/danhsachnhanvien.xls";
+                list = EmployeeDB.getAllEmployeeByManagerId(e.getId());
+            } else {
+                return "";
+            }
+            HSSFWorkbook wb2003 = new HSSFWorkbook();
+            HSSFSheet sheet = (HSSFSheet) wb2003.createSheet();
+            HSSFRow row = sheet.createRow(0);
+            row.createCell(0, CellType.STRING).setCellValue("Số thứ tự");
+            row.createCell(1, CellType.STRING).setCellValue("Tên nhân viên");
+            row.createCell(2, CellType.STRING).setCellValue("Account");
+            row.createCell(3, CellType.STRING).setCellValue("Giới tính");
+            row.createCell(4, CellType.STRING).setCellValue("Phòng ban");
+            row.createCell(5, CellType.STRING).setCellValue("Chức vụ");
+            int index = 1;
+            int i = 0;
+            while (i < list.size()) {
+                Employee em = list.get(i);
+                row = sheet.createRow(index);
+                row.createCell(0, CellType.STRING).setCellValue(i + 1);
+                row.createCell(1, CellType.STRING).setCellValue(em.getFullName());
+                row.createCell(2, CellType.STRING).setCellValue(em.getUserName());
+                row.createCell(3, CellType.STRING).setCellValue(em.getGen());
+                row.createCell(4, CellType.STRING).setCellValue(em.getDepartmentName());
+                row.createCell(5, CellType.STRING).setCellValue(em.getPositionName());
+                i++;
+                index++;
+            }
+            for (int n = 0; n < 6; n++) {
+                sheet.autoSizeColumn(n);
+            }
+            OutPutFile.createOutputFile(wb2003, file, path);
+            return link;
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return "";
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(EmployeeDB.exportEmployee(new Employee(1002)));
+    }
+    
     public static void update(Employee e) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "UPDATE Employee\n"
@@ -261,7 +352,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Có lỗi xảy ra, vui lòng thử lại!");
         }
     }
-
+    
     public static void block(Employee e) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "UPDATE Employee\n"
@@ -278,7 +369,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Có lỗi xảy ra, vui lòng thử lại!");
         }
     }
-
+    
     public static void delete(Employee e) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "DELETE Employee\n"
@@ -291,25 +382,5 @@ public class EmployeeDB implements DBContext {
             System.out.println("Error as model.dao.EmployeeDB.delete()");
             throw new RuntimeException("Có lỗi xảy ra, vui lòng thử lại!");
         }
-    }
-
-    public static void main(String[] args) {
-
-        //        new Employee("Nguyễn Thị Kim Vy", "vy@gmail.com", "Đà Nẵng", "0795457231", 3, 0, 1).create(new Contract(Date.valueOf("2024-10-25"), 10000000, "Hỗ trợ xăng xe"));
-//        for (Employee e : getAllEmployee()) {
-//            System.out.println(e.getUserName());
-//        }
-//        System.out.println(new Contract(Date.valueOf("2024-10-20"), 10000000, "Hỗ trợ xăng xe"));
-//        new Employee(1005).paySalary();
-//        System.out.println(new Employee(1005).getSalaryBasic());
-//        for (Employee e : getAllEmployee()) {
-//            System.out.println(e);
-//        }
-//        System.out.println("---");
-//        System.out.println(EmployeeDB.getAllEmployee().get(0));
-//        System.out.println(EmployeeDB.getAllEmployee().indexOf(EmployeeDB.getAllEmployee().get(0)));
-//new Employee(1002).startTime();
-//        InetAddress myIP = InetAddress.getLoopbackAddress();
-//        System.out.println(myIP.getHostAddress());
     }
 }
