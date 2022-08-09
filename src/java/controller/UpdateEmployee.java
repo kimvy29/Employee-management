@@ -103,7 +103,6 @@ public class UpdateEmployee extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
         int id = Integer.parseInt(request.getParameter("id"));
-        String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
         String address = request.getParameter("address");
         String tel = request.getParameter("tel");
@@ -112,7 +111,6 @@ public class UpdateEmployee extends HttpServlet {
         int departmentId = Integer.parseInt(request.getParameter("departmentId"));
         boolean sex = Boolean.parseBoolean(request.getParameter("sex"));
         Employee e = new Employee(id);
-        e.setFullName(fullName);
         e.setEmail(email);
         e.setAddress(address);
         e.setTel(tel);

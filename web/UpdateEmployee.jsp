@@ -25,7 +25,7 @@
                     <table class="table" style="font-size: 15px; color: black; font-family: auto" cellspacing="3" cellpadding="3">
                         <tr>
                             <th scope="col">Họ và tên</th>
-                            <td><input style="border: none; background: none" type="text" name="fullName" value="${e.fullName}"></td>
+                            <td><input style="border: none; background: none" type="text" disabled="" value="${e.fullName}"></td>
                         </tr>
                         <tr>
                             <th scope="col">Account</th>

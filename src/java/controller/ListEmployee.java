@@ -72,7 +72,6 @@ public class ListEmployee extends HttpServlet {
                         break;
                     }
                     case 2: {
-                        request.setAttribute("link", EmployeeDB.exportEmployee(new Employee(a.getEmpId())));
                         switch (a.getPositionId()) {
                             case 1:
                                 request.setAttribute("list", EmployeeDB.getAllEmployee());
@@ -84,6 +83,7 @@ public class ListEmployee extends HttpServlet {
                                 request.setAttribute("list", EmployeeDB.getAllEmployeeByManagerId(a.getEmpId()));
                                 break;
                         }
+                        request.setAttribute("link", EmployeeDB.exportEmployee(new Employee(a.getEmpId())));
                         request.getRequestDispatcher("ListEmployee.jsp").include(request, response);
                         break;
                     }

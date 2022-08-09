@@ -33,6 +33,7 @@
                             <th scope="col">Chức vụ</th>
                             <th scope="col">Thưởng phạt</th>
                                 <c:if test="${acc.roleId == 1}">
+                                <th scope="col">Trạng thái</th>
                                 <th scope="col">Khóa tài khoản</th>
                                 <th scope="col">Update</th>
                                 </c:if>
@@ -53,6 +54,14 @@
                                 <td>${l.positionName}</td>
                                 <td><a href="payoff-detail?id=${l.id}">Xem</a></td>
                                 <c:if test="${acc.roleId == 1}">
+                                    <td id="stt${l.id}">
+                                        <c:if test="${l.block == 'Mở'}">
+                                            Đang khóa
+                                        </c:if>
+                                        <c:if test="${l.block == 'Khóa'}">
+                                            Đang mở
+                                        </c:if>
+                                    </td>
                                     <td><button class="btn btn-danger" id="block${l.id}" onclick="block(${l.id}, '${l.fullName}')">${l.block}</button></td>
                                     <td><a style="color: blue" href="update-employee?id=${l.id}">Update</a></td>
                                 </c:if>
@@ -93,9 +102,11 @@
 
                         if (status.trim() == "Khóa") {
                             document.getElementById("block" + id).innerHTML = "Mở";
+                            document.getElementById("stt" + id).innerHTML = "Đang khóa";
                             alert("Khóa tài khoản của nhân viên " + fullName + " thành công!");
                         } else {
                             document.getElementById("block" + id).innerHTML = "Khóa";
+                            document.getElementById("stt" + id).innerHTML = "Đang mở";
                             alert("Mở tài khoản của nhân viên " + fullName + " thành công!");
                         }
                     }

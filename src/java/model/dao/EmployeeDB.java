@@ -28,7 +28,7 @@ import org.apache.poi.ss.usermodel.CellType;
  * @author NguyenVy
  */
 public class EmployeeDB implements DBContext {
-    
+
     public static ArrayList<Employee> getAllEmployee() {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -41,7 +41,7 @@ public class EmployeeDB implements DBContext {
             ArrayList<Employee> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
-                
+
             }
             conn.close();
             return list;
@@ -51,7 +51,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
-    
+
     public static ArrayList<Employee> getAllEmployeeByManagerId(int managerId) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -64,7 +64,7 @@ public class EmployeeDB implements DBContext {
             ArrayList<Employee> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
-                
+
             }
             conn.close();
             return list;
@@ -74,7 +74,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
-    
+
     public static ArrayList<Employee> getAllEmployeeByDepartmentId(int departmentId) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -87,7 +87,7 @@ public class EmployeeDB implements DBContext {
             ArrayList<Employee> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
-                
+
             }
             conn.close();
             return list;
@@ -97,7 +97,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
-    
+
     public static ArrayList<Employee> getAllManager() {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -109,7 +109,7 @@ public class EmployeeDB implements DBContext {
             ArrayList<Employee> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
-                
+
             }
             conn.close();
             return list;
@@ -119,7 +119,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
-    
+
     public static ArrayList<Employee> getAllLeaderRoom(int departmentId) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -132,7 +132,7 @@ public class EmployeeDB implements DBContext {
             ArrayList<Employee> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
-                
+
             }
             conn.close();
             return list;
@@ -142,7 +142,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
-    
+
     public static ArrayList<Employee> getAllManagerLeader() {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -154,7 +154,7 @@ public class EmployeeDB implements DBContext {
             ArrayList<Employee> list = new ArrayList<>();
             while (rs.next()) {
                 list.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getBoolean(12)));
-                
+
             }
             conn.close();
             return list;
@@ -164,7 +164,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Somthing error...");
         }
     }
-    
+
     public static Employee getEmployee(int id) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -184,7 +184,7 @@ public class EmployeeDB implements DBContext {
         }
         throw new RuntimeException("Nhân viên không tồn tại!");
     }
-    
+
     public static Employee getEmployeeByName(String name) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "SELECT e.id,e.fullName,e.email,e.address, e.tel,e.positionId, p.name, e.managerId, e.activity, e.departmentId, e.avatar, e.sex from Employee e\n"
@@ -204,7 +204,7 @@ public class EmployeeDB implements DBContext {
         }
         throw new RuntimeException("Nhân viên không tồn tại!");
     }
-    
+
     public static Employee create(Employee e, Contract c) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "INSERT INTO Employee(fullName, email, address, tel, positionId, managerId, departmentId, sex)\n"
@@ -253,7 +253,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Có lỗi xảy ra, vui lòng thử lại!");
         }
     }
-    
+
     public static String exportEmployee(Employee e) {
         try {
             File f = new File("./");
@@ -279,6 +279,8 @@ public class EmployeeDB implements DBContext {
             } else {
                 return "";
             }
+            File f1 = new File(path);
+            f1.mkdirs();
             HSSFWorkbook wb2003 = new HSSFWorkbook();
             HSSFSheet sheet = (HSSFSheet) wb2003.createSheet();
             HSSFRow row = sheet.createRow(0);
@@ -305,18 +307,18 @@ public class EmployeeDB implements DBContext {
             for (int n = 0; n < 6; n++) {
                 sheet.autoSizeColumn(n);
             }
-            OutPutFile.createOutputFile(wb2003, file, path);
+            OutPutFile.createOutputFile(wb2003, file);
             return link;
         } catch (Exception ex) {
             System.out.println(ex);
         }
         return "";
     }
-    
+
     public static void main(String[] args) {
-        System.out.println(EmployeeDB.exportEmployee(new Employee(1002)));
+        System.out.println(EmployeeDB.exportEmployee(new Employee(new Account("admin").getEmpId())));
     }
-    
+
     public static void update(Employee e) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "UPDATE Employee\n"
@@ -352,7 +354,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Có lỗi xảy ra, vui lòng thử lại!");
         }
     }
-    
+
     public static void block(Employee e) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "UPDATE Employee\n"
@@ -369,7 +371,7 @@ public class EmployeeDB implements DBContext {
             throw new RuntimeException("Có lỗi xảy ra, vui lòng thử lại!");
         }
     }
-    
+
     public static void delete(Employee e) {
         try (Connection conn = DBContext.getConnection()) {
             String query = "DELETE Employee\n"

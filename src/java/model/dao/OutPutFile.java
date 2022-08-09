@@ -16,9 +16,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  * @author ACER
  */
 public class OutPutFile {
-    public static void createOutputFile(HSSFWorkbook workbook, String excelFilePath, String path) throws IOException {
-        File f = new File(path);
-        f.mkdirs();
+    public static void createOutputFile(HSSFWorkbook workbook, String excelFilePath) throws IOException {
         try (OutputStream os = new FileOutputStream(excelFilePath)) {
             workbook.write(os);
         }
