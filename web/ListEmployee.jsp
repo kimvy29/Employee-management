@@ -15,7 +15,7 @@
             <div class="col-md-12">
                 <div id="import" class="page_title" style="display: flex;justify-content: space-between;">
                     <h2>Danh sách nhân viên</h2>
-                    <a href="${link}" download="danhsachnhanvien.xls"><button class="btn btn-success">Kết xuất excel</button></a>
+                    <a href="./danhsachnhanvien.xls" download="danhsachnhanvien.xls"><button class="btn btn-success">Kết xuất excel</button></a>
                 </div>
             </div>
         </div>

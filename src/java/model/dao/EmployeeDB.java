@@ -254,30 +254,19 @@ public class EmployeeDB implements DBContext {
         }
     }
 
-    public static String exportEmployee(Employee e) {
+    public static void exportEmployee(Employee e) {
         try {
             File f = new File("./");
-            String file;
-            String path;
-            String link;
+            String file = f.getCanonicalPath() + "/build/web/danhsachnhanvien.xls";
+            String path = f.getCanonicalPath() + "/build/web";
+            String link = "./danhsachnhanvien.xls";
             ArrayList<Employee> list = new ArrayList<>();
             if (new Account(e.getId()).getRoleId() == 1 || e.getPositionId() == 1) {
-                file = f.getCanonicalPath() + "/build/web/all/danhsachnhanvien.xls";
-                path = f.getCanonicalPath() + "/build/web/all";
-                link = "./all/danhsachnhanvien.xls";
                 list = EmployeeDB.getAllEmployee();
             } else if (e.getPositionId() == 2) {
-                file = f.getCanonicalPath() + "/build/web/manager/" + e.getId() + "/danhsachnhanvien.xls";
-                path = f.getCanonicalPath() + "/build/web/manager/" + e.getId();
-                link = "./manager/" + e.getId() + "/danhsachnhanvien.xls";
                 list = EmployeeDB.getAllEmployeeByDepartmentId(e.getDepartmentId());
             } else if (e.getPositionId() == 3) {
-                file = f.getCanonicalPath() + "/build/web/leader/" + e.getId() + "/danhsachnhanvien.xls";
-                path = f.getCanonicalPath() + "/build/web/leader/" + e.getId();
-                link = "./leader/" + e.getId() + "/danhsachnhanvien.xls";
                 list = EmployeeDB.getAllEmployeeByManagerId(e.getId());
-            } else {
-                return "";
             }
             File f1 = new File(path);
             f1.mkdirs();
@@ -308,15 +297,13 @@ public class EmployeeDB implements DBContext {
                 sheet.autoSizeColumn(n);
             }
             OutPutFile.createOutputFile(wb2003, file);
-            return link;
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        return "";
     }
 
     public static void main(String[] args) {
-        System.out.println(EmployeeDB.exportEmployee(new Employee(new Account("admin").getEmpId())));
+        EmployeeDB.exportEmployee(new Employee(new Account("admin").getEmpId()));
     }
 
     public static void update(Employee e) {
