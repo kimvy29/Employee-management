@@ -32,7 +32,7 @@
                             <td><input style="border: none; background: none" type="number" name="roomNo" value="${department.roomNo}"></td>
                         </tr>
                         <tr>
-                            <th scope="col">Trưởng phòng</th>
+                            <th scope="col">Người quản lí</th>
                             <td>
                                 <select style="border: none; background: none" class="form-control" name="managerId" id="managerId">
                                     <option value="0" >-----------------------------</option>
